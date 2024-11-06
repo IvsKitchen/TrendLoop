@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TrendLoop.Data\TrendLoop.Data.csproj" />
     <ProjectReference Include="..\TrendLoop.Web.ViewModels\TrendLoop.Web.ViewModels.csproj" />
   </ItemGroup>
 
