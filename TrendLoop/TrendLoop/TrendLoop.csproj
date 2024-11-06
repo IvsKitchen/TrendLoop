@@ -17,4 +17,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TrendLoop.Web.ViewModels\TrendLoop.Web.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>

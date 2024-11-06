@@ -1,4 +1,4 @@
-namespace TrendLoop.Models
+namespace TrendLoop.Web.ViewModels
 {
     public class ErrorViewModel
     {

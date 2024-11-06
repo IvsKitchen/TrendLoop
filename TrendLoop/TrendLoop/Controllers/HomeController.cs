@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using TrendLoop.Models;
+using TrendLoop.Web.ViewModels;
 
 namespace TrendLoop.Controllers
 {
