@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TrendLoop.Data;
+using TrendLoop.Data.Models;
 
 namespace TrendLoop
 {
@@ -16,7 +17,8 @@ namespace TrendLoop
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<TrendLoopDbContext>();
             builder.Services.AddControllersWithViews();
 
@@ -39,6 +41,7 @@ namespace TrendLoop
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

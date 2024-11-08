@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using TrendLoop.Data.Models;
 
 namespace TrendLoop.Data
 {
-    public class TrendLoopDbContext : IdentityDbContext
+    public class TrendLoopDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public TrendLoopDbContext(DbContextOptions<TrendLoopDbContext> options) : base(options)
         {
@@ -20,8 +22,6 @@ namespace TrendLoop.Data
         
         public virtual DbSet<CategoryAttributeType> CategoriesAttributeTypes { get; set; } = null!;
         public virtual DbSet<ProductAttributeValue> ProductsAttributeValues { get; set; } = null!;
-        public virtual DbSet<ProductBuyer> ProductsBuyers { get; set; } = null!;
-        public virtual DbSet<ProductSeller> ProductsSellers { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

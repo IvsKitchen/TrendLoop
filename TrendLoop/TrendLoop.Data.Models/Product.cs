@@ -51,20 +51,14 @@ namespace TrendLoop.Data.Models
 
         [Required]
         [ForeignKey(nameof(SellerId))]
-        public IdentityUser Seller { get; set; } = null!;
+        public ApplicationUser Seller { get; set; } = null!;
 
-        [Required]
-        public Guid BuyerId { get; set; }
+        public Guid? BuyerId { get; set; }
 
-        [Required]
         [ForeignKey(nameof(BuyerId))]
-        public IdentityUser Buyer { get; set; } = null!;
+        public ApplicationUser? Buyer { get; set; }
 
         public virtual ICollection<ProductAttributeValue> ProductAttributeValues { get; set; } = new HashSet<ProductAttributeValue>();
-
-        public virtual ICollection<ProductSeller> ProductsSellers { get; set; } = new HashSet<ProductSeller>();
-
-        public virtual ICollection<ProductBuyer> ProductsBuyers { get; set; } = new HashSet<ProductBuyer>();
 
         public bool IsDeleted { get; set; } = false;
     }

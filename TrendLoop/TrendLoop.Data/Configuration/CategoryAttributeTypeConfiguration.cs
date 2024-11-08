@@ -11,7 +11,7 @@ namespace TrendLoop.Data.Configuration
             // configure composite primary key
             builder.HasKey(ca => new { ca.CategoryId, ca.AttributeTypeId });
 
-            // set the one Category to Product relationship and delete behavior
+            // set the Category to Product relationship and delete behavior
             builder
                 .HasOne(ca => ca.Category)
                 .WithMany(c => c.AttributeTypes)
