@@ -20,6 +20,12 @@ namespace TrendLoop.Data.Configuration
                 .HasOne(p => p.Buyer)
                 .WithMany(b => b.ProductsBought)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // set the ApplicationUser as Buyer and Product relationship and delete behavior
+            builder
+                .HasOne(p => p.Subcategory)
+                .WithMany(s => s.Products)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
     }

@@ -4,16 +4,16 @@ using TrendLoop.Data.Models;
 
 namespace TrendLoop.Data.Configuration
 {
-    public class CategoryAttributeTypeConfiguration : IEntityTypeConfiguration<CategoryAttributeType>
+    public class SubcategoryAttributeTypeConfiguration : IEntityTypeConfiguration<SubcategoryAttributeType>
     {
-        public void Configure(EntityTypeBuilder<CategoryAttributeType> builder)
+        public void Configure(EntityTypeBuilder<SubcategoryAttributeType> builder)
         {
             // configure composite primary key
-            builder.HasKey(ca => new { ca.CategoryId, ca.AttributeTypeId });
+            builder.HasKey(sa => new { sa.SubcategoryId, sa.AttributeTypeId });
 
             // set the Category to Product relationship and delete behavior
             builder
-                .HasOne(ca => ca.Category)
+                .HasOne(sa => sa.Subcategory)
                 .WithMany(c => c.AttributeTypes)
                 .OnDelete(DeleteBehavior.Restrict);
         }

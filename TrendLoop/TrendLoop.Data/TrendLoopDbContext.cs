@@ -16,11 +16,11 @@ namespace TrendLoop.Data
         public virtual DbSet<Product> Products { get; set; } = null!;
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<Brand> Brands { get; set; } = null!;
-        public virtual DbSet<Material> Materials { get; set; } = null!;
+        public virtual DbSet<Subcategory> Subcategories { get; set; } = null!;
         public virtual DbSet<AttributeType> AttributeTypes { get; set; } = null!;
         public virtual DbSet<AttributeValue> AttributeValue { get; set; } = null!;
         
-        public virtual DbSet<CategoryAttributeType> CategoriesAttributeTypes { get; set; } = null!;
+        public virtual DbSet<SubcategoryAttributeType> SubcategoriesAttributeTypes { get; set; } = null!;
         public virtual DbSet<ProductAttributeValue> ProductsAttributeValues { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

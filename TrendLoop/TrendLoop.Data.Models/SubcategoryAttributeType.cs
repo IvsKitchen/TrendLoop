@@ -3,17 +3,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TrendLoop.Data.Models
 {
-    public class CategoryAttributeType
+    public class SubcategoryAttributeType
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public int CategoryId { get; set; }
+        public int SubcategoryId { get; set; }
 
         [Required]
-        [ForeignKey(nameof(CategoryId))]
-        public Category Category { get; set; } = null!;
+        [ForeignKey(nameof(SubcategoryId))]
+        public Subcategory Subcategory { get; set; } = null!;
 
         [Required]
         public int AttributeTypeId { get; set; }

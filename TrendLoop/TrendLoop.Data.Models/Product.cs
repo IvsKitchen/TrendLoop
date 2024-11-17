@@ -17,6 +17,7 @@ namespace TrendLoop.Data.Models
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
+        // TODO make required
         [Range(typeof(decimal), PriceMinValueAsString, PriceMaxValueAsString)]
         public decimal Price { get; set; }
 
@@ -40,11 +41,11 @@ namespace TrendLoop.Data.Models
         public Brand Brand { get; set; } = null!;
 
         [Required]
-        public int MaterialId { get; set; }
+        public int SubcategoryId { get; set; }
 
         [Required]
-        [ForeignKey(nameof(MaterialId))]
-        public Material Material { get; set; } = null!;
+        [ForeignKey(nameof(SubcategoryId))]
+        public Subcategory Subcategory { get; set; } = null!;
 
         [Required]
         public Guid SellerId { get; set; }

@@ -25,6 +25,11 @@
             public const int NameMaxLength = 20;
         }
 
+        public static class Subcategory
+        {
+            public const int NameMaxLength = 20;
+        }
+
         public static class AttributeType
         {
             public const int NameMaxLength = 20;

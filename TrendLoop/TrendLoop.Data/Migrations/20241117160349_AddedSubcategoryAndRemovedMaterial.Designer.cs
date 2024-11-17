@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrendLoop.Data;
 
@@ -11,9 +12,11 @@ using TrendLoop.Data;
 namespace TrendLoop.Data.Migrations
 {
     [DbContext(typeof(TrendLoopDbContext))]
-    partial class TrendLoopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241117160349_AddedSubcategoryAndRemovedMaterial")]
+    partial class AddedSubcategoryAndRemovedMaterial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
