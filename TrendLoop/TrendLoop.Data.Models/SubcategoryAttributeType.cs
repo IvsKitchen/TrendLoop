@@ -5,9 +5,6 @@ namespace TrendLoop.Data.Models
 {
     public class SubcategoryAttributeType
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public int SubcategoryId { get; set; }
 

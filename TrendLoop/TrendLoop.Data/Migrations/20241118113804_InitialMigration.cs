@@ -78,17 +78,17 @@ namespace TrendLoop.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Materials",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Materials", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,7 +198,7 @@ namespace TrendLoop.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AttributeValue",
+                name: "AttributeValues",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -208,9 +208,9 @@ namespace TrendLoop.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AttributeValue", x => x.Id);
+                    table.PrimaryKey("PK_AttributeValues", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AttributeValue_AttributeTypes_AttributeTypeId",
+                        name: "FK_AttributeValues_AttributeTypes_AttributeTypeId",
                         column: x => x.AttributeTypeId,
                         principalTable: "AttributeTypes",
                         principalColumn: "Id",
@@ -218,48 +218,30 @@ namespace TrendLoop.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "Subcategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     AttributeTypeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.PrimaryKey("PK_Subcategories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Categories_AttributeTypes_AttributeTypeId",
+                        name: "FK_Subcategories_AttributeTypes_AttributeTypeId",
                         column: x => x.AttributeTypeId,
                         principalTable: "AttributeTypes",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CategoriesAttributeTypes",
-                columns: table => new
-                {
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    AttributeTypeId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoriesAttributeTypes", x => new { x.CategoryId, x.AttributeTypeId });
                     table.ForeignKey(
-                        name: "FK_CategoriesAttributeTypes_AttributeTypes_AttributeTypeId",
-                        column: x => x.AttributeTypeId,
-                        principalTable: "AttributeTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoriesAttributeTypes_Categories_CategoryId",
+                        name: "FK_Subcategories_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -274,7 +256,7 @@ namespace TrendLoop.Data.Migrations
                     AddedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false),
-                    MaterialId = table.Column<int>(type: "int", nullable: false),
+                    SubcategoryId = table.Column<int>(type: "int", nullable: false),
                     SellerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BuyerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
@@ -307,11 +289,36 @@ namespace TrendLoop.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Products_Materials_MaterialId",
-                        column: x => x.MaterialId,
-                        principalTable: "Materials",
+                        name: "FK_Products_Subcategories_SubcategoryId",
+                        column: x => x.SubcategoryId,
+                        principalTable: "Subcategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubcategoriesAttributeTypes",
+                columns: table => new
+                {
+                    SubcategoryId = table.Column<int>(type: "int", nullable: false),
+                    AttributeTypeId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubcategoriesAttributeTypes", x => new { x.SubcategoryId, x.AttributeTypeId });
+                    table.ForeignKey(
+                        name: "FK_SubcategoriesAttributeTypes_AttributeTypes_AttributeTypeId",
+                        column: x => x.AttributeTypeId,
+                        principalTable: "AttributeTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SubcategoriesAttributeTypes_Subcategories_SubcategoryId",
+                        column: x => x.SubcategoryId,
+                        principalTable: "Subcategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -325,9 +332,9 @@ namespace TrendLoop.Data.Migrations
                 {
                     table.PrimaryKey("PK_ProductsAttributeValues", x => new { x.ProductId, x.AttributeValueId });
                     table.ForeignKey(
-                        name: "FK_ProductsAttributeValues_AttributeValue_AttributeValueId",
+                        name: "FK_ProductsAttributeValues_AttributeValues_AttributeValueId",
                         column: x => x.AttributeValueId,
-                        principalTable: "AttributeValue",
+                        principalTable: "AttributeValues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -378,18 +385,8 @@ namespace TrendLoop.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AttributeValue_AttributeTypeId",
-                table: "AttributeValue",
-                column: "AttributeTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Categories_AttributeTypeId",
-                table: "Categories",
-                column: "AttributeTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CategoriesAttributeTypes_AttributeTypeId",
-                table: "CategoriesAttributeTypes",
+                name: "IX_AttributeValues_AttributeTypeId",
+                table: "AttributeValues",
                 column: "AttributeTypeId");
 
             migrationBuilder.CreateIndex(
@@ -408,19 +405,34 @@ namespace TrendLoop.Data.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_MaterialId",
-                table: "Products",
-                column: "MaterialId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Products_SellerId",
                 table: "Products",
                 column: "SellerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Products_SubcategoryId",
+                table: "Products",
+                column: "SubcategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductsAttributeValues_AttributeValueId",
                 table: "ProductsAttributeValues",
                 column: "AttributeValueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subcategories_AttributeTypeId",
+                table: "Subcategories",
+                column: "AttributeTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subcategories_CategoryId",
+                table: "Subcategories",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubcategoriesAttributeTypes_AttributeTypeId",
+                table: "SubcategoriesAttributeTypes",
+                column: "AttributeTypeId");
         }
 
         /// <inheritdoc />
@@ -442,16 +454,16 @@ namespace TrendLoop.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CategoriesAttributeTypes");
+                name: "ProductsAttributeValues");
 
             migrationBuilder.DropTable(
-                name: "ProductsAttributeValues");
+                name: "SubcategoriesAttributeTypes");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AttributeValue");
+                name: "AttributeValues");
 
             migrationBuilder.DropTable(
                 name: "Products");
@@ -463,13 +475,13 @@ namespace TrendLoop.Data.Migrations
                 name: "Brands");
 
             migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Materials");
+                name: "Subcategories");
 
             migrationBuilder.DropTable(
                 name: "AttributeTypes");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

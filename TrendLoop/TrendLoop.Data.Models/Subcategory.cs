@@ -24,6 +24,6 @@ namespace TrendLoop.Data.Models
 
         public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
 
-        public virtual ICollection<SubcategoryAttributeType> AttributeTypes { get; set; } = new HashSet<SubcategoryAttributeType>();
+        public virtual ICollection<SubcategoryAttributeType> SubcategoryAttributeTypes { get; set; } = new HashSet<SubcategoryAttributeType>();
     }
 }

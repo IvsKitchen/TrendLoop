@@ -12,8 +12,8 @@ using TrendLoop.Data;
 namespace TrendLoop.Data.Migrations
 {
     [DbContext(typeof(TrendLoopDbContext))]
-    [Migration("20241108134137_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20241118114558_RemoveWrongIdSubcategoryAttributeType")]
+    partial class RemoveWrongIdSubcategoryAttributeType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -264,7 +264,7 @@ namespace TrendLoop.Data.Migrations
 
                     b.HasIndex("AttributeTypeId");
 
-                    b.ToTable("AttributeValue");
+                    b.ToTable("AttributeValues");
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.Brand", b =>
@@ -296,9 +296,6 @@ namespace TrendLoop.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AttributeTypeId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -309,48 +306,7 @@ namespace TrendLoop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AttributeTypeId");
-
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("TrendLoop.Data.Models.CategoryAttributeType", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AttributeTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("CategoryId", "AttributeTypeId");
-
-                    b.HasIndex("AttributeTypeId");
-
-                    b.ToTable("CategoriesAttributeTypes");
-                });
-
-            modelBuilder.Entity("TrendLoop.Data.Models.Material", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Materials");
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.Product", b =>
@@ -382,9 +338,6 @@ namespace TrendLoop.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MaterialId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -396,6 +349,9 @@ namespace TrendLoop.Data.Migrations
                     b.Property<Guid>("SellerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("SubcategoryId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
@@ -404,9 +360,9 @@ namespace TrendLoop.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("MaterialId");
-
                     b.HasIndex("SellerId");
+
+                    b.HasIndex("SubcategoryId");
 
                     b.ToTable("Products");
                 });
@@ -424,6 +380,52 @@ namespace TrendLoop.Data.Migrations
                     b.HasIndex("AttributeValueId");
 
                     b.ToTable("ProductsAttributeValues");
+                });
+
+            modelBuilder.Entity("TrendLoop.Data.Models.Subcategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AttributeTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttributeTypeId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Subcategories");
+                });
+
+            modelBuilder.Entity("TrendLoop.Data.Models.SubcategoryAttributeType", b =>
+                {
+                    b.Property<int>("SubcategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AttributeTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SubcategoryId", "AttributeTypeId");
+
+                    b.HasIndex("AttributeTypeId");
+
+                    b.ToTable("SubcategoriesAttributeTypes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -488,32 +490,6 @@ namespace TrendLoop.Data.Migrations
                     b.Navigation("AttributeType");
                 });
 
-            modelBuilder.Entity("TrendLoop.Data.Models.Category", b =>
-                {
-                    b.HasOne("TrendLoop.Data.Models.AttributeType", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("AttributeTypeId");
-                });
-
-            modelBuilder.Entity("TrendLoop.Data.Models.CategoryAttributeType", b =>
-                {
-                    b.HasOne("TrendLoop.Data.Models.AttributeType", "AttributeType")
-                        .WithMany()
-                        .HasForeignKey("AttributeTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrendLoop.Data.Models.Category", "Category")
-                        .WithMany("AttributeTypes")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("AttributeType");
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("TrendLoop.Data.Models.Product", b =>
                 {
                     b.HasOne("TrendLoop.Data.Models.Brand", "Brand")
@@ -533,15 +509,15 @@ namespace TrendLoop.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TrendLoop.Data.Models.Material", "Material")
-                        .WithMany("Products")
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TrendLoop.Data.Models.ApplicationUser", "Seller")
                         .WithMany("ProductsForSale")
                         .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TrendLoop.Data.Models.Subcategory", "Subcategory")
+                        .WithMany("Products")
+                        .HasForeignKey("SubcategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -551,9 +527,9 @@ namespace TrendLoop.Data.Migrations
 
                     b.Navigation("Category");
 
-                    b.Navigation("Material");
-
                     b.Navigation("Seller");
+
+                    b.Navigation("Subcategory");
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.ProductAttributeValue", b =>
@@ -575,6 +551,40 @@ namespace TrendLoop.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("TrendLoop.Data.Models.Subcategory", b =>
+                {
+                    b.HasOne("TrendLoop.Data.Models.AttributeType", null)
+                        .WithMany("Subcategories")
+                        .HasForeignKey("AttributeTypeId");
+
+                    b.HasOne("TrendLoop.Data.Models.Category", "Category")
+                        .WithMany("Subcategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("TrendLoop.Data.Models.SubcategoryAttributeType", b =>
+                {
+                    b.HasOne("TrendLoop.Data.Models.AttributeType", "AttributeType")
+                        .WithMany()
+                        .HasForeignKey("AttributeTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TrendLoop.Data.Models.Subcategory", "Subcategory")
+                        .WithMany("AttributeTypes")
+                        .HasForeignKey("SubcategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AttributeType");
+
+                    b.Navigation("Subcategory");
+                });
+
             modelBuilder.Entity("TrendLoop.Data.Models.ApplicationUser", b =>
                 {
                     b.Navigation("ProductsBought");
@@ -584,7 +594,7 @@ namespace TrendLoop.Data.Migrations
 
             modelBuilder.Entity("TrendLoop.Data.Models.AttributeType", b =>
                 {
-                    b.Navigation("Categories");
+                    b.Navigation("Subcategories");
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.Brand", b =>
@@ -594,19 +604,21 @@ namespace TrendLoop.Data.Migrations
 
             modelBuilder.Entity("TrendLoop.Data.Models.Category", b =>
                 {
-                    b.Navigation("AttributeTypes");
-
                     b.Navigation("Products");
-                });
 
-            modelBuilder.Entity("TrendLoop.Data.Models.Material", b =>
-                {
-                    b.Navigation("Products");
+                    b.Navigation("Subcategories");
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.Product", b =>
                 {
                     b.Navigation("ProductAttributeValues");
+                });
+
+            modelBuilder.Entity("TrendLoop.Data.Models.Subcategory", b =>
+                {
+                    b.Navigation("AttributeTypes");
+
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

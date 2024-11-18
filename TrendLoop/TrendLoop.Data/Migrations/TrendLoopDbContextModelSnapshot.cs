@@ -238,7 +238,7 @@ namespace TrendLoop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AttributeTypes");
+                    b.ToTable("AttributeTypes", (string)null);
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.AttributeValue", b =>
@@ -261,7 +261,7 @@ namespace TrendLoop.Data.Migrations
 
                     b.HasIndex("AttributeTypeId");
 
-                    b.ToTable("AttributeValue");
+                    b.ToTable("AttributeValues", (string)null);
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.Brand", b =>
@@ -282,7 +282,7 @@ namespace TrendLoop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Brands");
+                    b.ToTable("Brands", (string)null);
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.Category", b =>
@@ -303,7 +303,7 @@ namespace TrendLoop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.Product", b =>
@@ -361,7 +361,7 @@ namespace TrendLoop.Data.Migrations
 
                     b.HasIndex("SubcategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.ProductAttributeValue", b =>
@@ -376,7 +376,7 @@ namespace TrendLoop.Data.Migrations
 
                     b.HasIndex("AttributeValueId");
 
-                    b.ToTable("ProductsAttributeValues");
+                    b.ToTable("ProductsAttributeValues", (string)null);
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.Subcategory", b =>
@@ -407,7 +407,7 @@ namespace TrendLoop.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Subcategories");
+                    b.ToTable("Subcategories", (string)null);
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.SubcategoryAttributeType", b =>
@@ -418,14 +418,11 @@ namespace TrendLoop.Data.Migrations
                     b.Property<int>("AttributeTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.HasKey("SubcategoryId", "AttributeTypeId");
 
                     b.HasIndex("AttributeTypeId");
 
-                    b.ToTable("SubcategoriesAttributeTypes");
+                    b.ToTable("SubcategoriesAttributeTypes", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

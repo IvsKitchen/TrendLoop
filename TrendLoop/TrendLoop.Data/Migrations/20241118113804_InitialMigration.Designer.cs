@@ -12,8 +12,8 @@ using TrendLoop.Data;
 namespace TrendLoop.Data.Migrations
 {
     [DbContext(typeof(TrendLoopDbContext))]
-    [Migration("20241117160349_AddedSubcategoryAndRemovedMaterial")]
-    partial class AddedSubcategoryAndRemovedMaterial
+    [Migration("20241118113804_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -264,7 +264,7 @@ namespace TrendLoop.Data.Migrations
 
                     b.HasIndex("AttributeTypeId");
 
-                    b.ToTable("AttributeValue");
+                    b.ToTable("AttributeValues");
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.Brand", b =>

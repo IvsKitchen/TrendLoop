@@ -14,7 +14,7 @@ namespace TrendLoop.Data.Configuration
             // set the Category to Product relationship and delete behavior
             builder
                 .HasOne(sa => sa.Subcategory)
-                .WithMany(c => c.AttributeTypes)
+                .WithMany(c => c.SubcategoryAttributeTypes)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

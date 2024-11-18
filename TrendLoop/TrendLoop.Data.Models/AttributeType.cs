@@ -14,5 +14,7 @@ namespace TrendLoop.Data.Models
         public string Name { get; set; } = null!;
 
         public virtual ICollection<Subcategory> Subcategories { get; set; } = new HashSet<Subcategory>();
+
+        public virtual ICollection<AttributeValue> AttributeValues { get; set; } = new HashSet<AttributeValue>();
     }
 }
