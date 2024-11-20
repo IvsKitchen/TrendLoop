@@ -8,6 +8,7 @@
             public const int DescriptionMaxLength = 500;
             public const string PriceMinValueAsString = "0";
             public const string PriceMaxValueAsString = "79228162514264337593543950335";
+            public const string AddedOnDateFormat = "dddd, dd MMMM yyyy";
         }
 
         public static class Brand

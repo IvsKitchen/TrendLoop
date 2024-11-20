@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TrendLoop.Data.Models;
+using static System.Net.WebRequestMethods;
 
 namespace TrendLoop.Data.Seed
 {
@@ -196,89 +197,89 @@ namespace TrendLoop.Data.Seed
         private static Dictionary<string, List<string>> imagesBySubcategory = new Dictionary<string, List<string>>
         {
             {
-                "Dresses", new List<string>{ "https://unsplash.com/photos/white-sleeveless-dress-near-brown-wooden-door-DnOgzmRYFeg",
-                                             "https://unsplash.com/photos/womens-black-sleeveless-dress-4lFzZTnaIcQ",
-                                             "https://unsplash.com/photos/woman-in-pink-spaghetti-strap-mini-dress-using-smartphone-caLJTqKFZYY"}
+                "Dresses", new List<string>{ "https://images.unsplash.com/photo-1534875756527-5e8e4392005f?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                             "https://images.unsplash.com/photo-1524504259109-ddd837233694?q=80&w=1728&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                             "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             },
             {
-                "Jeans", new List<string>{ "https://unsplash.com/photos/woman-standing-wearing-jeans-and-white-top-zDyJOj8ZXG0",
-                                           "https://unsplash.com/photos/a-pair-of-black-jeans-on-a-white-background-muo8Zdkz_4w",
-                                           "https://unsplash.com/photos/woman-in-white-crew-neck-t-shirt-and-blue-denim-jeans-holding-black-camera-bEchRxSFYyw"}
+                "Jeans", new List<string>{ "https://images.unsplash.com/photo-1475178626620-a4d074967452?q=80&w=1886&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                           "https://images.unsplash.com/photo-1718252540617-6ecda2b56b57?q=80&w=1780&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                           "https://images.unsplash.com/photo-1458119516396-015721b6d60a?q=80&w=1908&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             },
             {
-                "Shirts", new List<string>{ "https://unsplash.com/photos/white-polo-shirt-hanged-on-brown-wooden-cabinet-ve2dwNxZ5Rg",
-                                            "https://unsplash.com/photos/woman-wearing-white-blouse-and-white-pearl-necklace-18ZKVM5-3ic",
-                                           "https://unsplash.com/photos/closeup-photo-of-woman-wearing-single-shoulder-dress-toa7kV0WPiM" }
+                "Shirts", new List<string>{ "https://images.unsplash.com/photo-1621773881532-fe65715b5137?q=80&w=1854&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                            "https://images.unsplash.com/photo-1571044420976-94b71786bae8?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                            "https://images.unsplash.com/photo-1618354691229-88d47f285158?q=80&w=1915&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }
             },
             {
-                "Outerwear", new List<string>{ "https://unsplash.com/photos/brown-long-sleeve-shirt-on-white-clothes-hanger-Fg15LdqpWr",
-                                               "https://unsplash.com/photos/woman-standing-while-wearing-pink-coat-X2UprmSxIHQ",
-                                               "https://unsplash.com/photos/a-mannequin-wearing-a-jacket-with-a-hood-6emxbke6OxA"}
+                "Outerwear", new List<string>{ "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y29hdCUyMG9uJTIwaGFuZ2VyfGVufDB8fDB8fHwy",
+                                               "https://images.unsplash.com/flagged/photo-1554033750-2137b5cfd7ce?q=80&w=1978&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                               "https://images.unsplash.com/photo-1729808784071-346188be62e9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTI3fHxqYWNrZXR8ZW58MHx8MHx8fDI%3D"}
             },
             {
-                "Trousers", new List<string>{ "https://unsplash.com/photos/closeup-photo-of-person-hiding-his-right-hand-in-his-pocket-eyFcZLLYvfA",
-                                              "https://unsplash.com/photos/blue-denim-jeans-on-white-textile-5NPId7L1_p4",
-                                              "https://unsplash.com/photos/woman-in-black-crop-top-and-white-blue-and-pink-floral-pants-XShgRpGVd9w"}
+                "Trousers", new List<string>{ "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                              "https://images.unsplash.com/photo-1624378441864-6eda7eac51cb?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                              "https://images.unsplash.com/photo-1552902875-9ac1f9fe0c07?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTIwfHx0cm91c2Vyc3xlbnwwfHwwfHx8Mg%3D%3D"}
             },
             {
-                "Costumes", new List<string>{ "https://unsplash.com/photos/a-person-wearing-sunglasses-I5Apn1MCX4A",
-                                              "https://unsplash.com/photos/a-person-wearing-a-hat-and-sunglasses-XTTqlj2xq30",
-                                              "https://unsplash.com/photos/a-woman-in-a-gray-jacket-and-black-pants-spTRNa8ErJY"}
+                "Costumes", new List<string>{ "https://images.unsplash.com/photo-1661670274599-cca3d1053f2f?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                              "https://images.unsplash.com/photo-1661669475530-16a1ed2455bf?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                              "https://images.unsplash.com/photo-1614786269829-d24616faf56d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fGJ1c2luZXNzJTIwY29zdHVtZXxlbnwwfHwwfHx8MA%3D%3D"}
             },
             {
-                "Boots", new List<string>{ "https://unsplash.com/photos/woman-in-black-chunky-heels-boots-standing-on-gray-floor-4bUF4gWhEXc",
-                                           "https://unsplash.com/photos/selective-focus-photography-of-pair-of-brown-leather-work-boots-c317Wf_dydg",
-                                           "https://unsplash.com/photos/woman-in-pink-spaghetti-strap-mini-dress-using-smartphone-caLJTqKFZYY"}
+                "Boots", new List<string>{ "https://images.unsplash.com/photo-1494955464529-790512c65305?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                           "https://images.unsplash.com/photo-1542834759-d9f324e7764b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                           "https://images.unsplash.com/photo-1605733160314-4fc7dac4bb16?q=80&w=1790&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             },
             {
-                "Sandals", new List<string>{"https://unsplash.com/photos/pair-of-womens-white-kitten-heels-Mjz4YVIy69Y",
-                                            "https://unsplash.com/photos/a-pair-of-shoes-sitting-on-top-of-a-table-next-to-a-rope-99ug0dVDTqU",
-                                            "https://unsplash.com/photos/black-and-brown-leather-half-shoe-on-white-box-WWSCNfShT5M"}
+                "Sandals", new List<string>{"https://images.unsplash.com/photo-1521632617300-1e0d873a69a3?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                            "https://images.unsplash.com/photo-1677922336367-908959f1aa9c?q=80&w=1943&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                            "https://images.unsplash.com/photo-1564051806-be616e3bdcec?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             },
             {
-                "Heels", new List<string>{"https://unsplash.com/photos/black-and-brown-peep-toe-heeled-shoes-BV8YCnXD7Ys",
-                                          "https://unsplash.com/photos/a-woman-is-sitting-on-a-bench-with-her-legs-crossed-Jq_918HEDdY",
-                                          "https://unsplash.com/photos/a-pair-of-red-high-heeled-shoes-on-a-grey-background-TrUqbmDVnf4" }
+                "Heels", new List<string>{"https://images.unsplash.com/photo-1618274158638-41d9f8d9279d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                          "https://images.unsplash.com/photo-1675237292372-5068aa262f43?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                          "https://images.unsplash.com/photo-1637002932871-13be6fd3feb8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }
             },
             {
-                "Trainers", new List<string>{"https://unsplash.com/photos/a-pair-of-running-shoes-on-a-white-background-W_uDEmTq0po",
-                                             "https://unsplash.com/photos/a-white-and-red-sneaker-on-a-table-BGKYYeKkzNg",
-                                             "https://unsplash.com/photos/a-pair-of-gray-sneakers-with-white-laces-wggDZ5mCF8w"}
+                "Trainers", new List<string>{"https://images.unsplash.com/photo-1637437757614-6491c8e915b5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                             "https://images.unsplash.com/photo-1715693754047-4c0b56576495?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                             "https://images.unsplash.com/photo-1719523677291-a395426c1a87?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             },
             {
-                "Backpacks", new List<string>{"https://unsplash.com/photos/brown-leather-backpack-on-white-surface-3o-X8WJOP5E",
-                                              "https://unsplash.com/photos/a-hand-holding-a-black-bag-qb3iYBz-RQ0",
-                                              "https://unsplash.com/photos/white-and-black-leather-handbag-VDow9qDDMKc"}
+                "Backpacks", new List<string>{"https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                              "https://images.unsplash.com/photo-1657296177449-8854b68537fb?q=80&w=1886&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                              "https://images.unsplash.com/photo-1596273501899-336404ed1701?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             },
             {
-                "Shoulder bags", new List<string>{ "https://unsplash.com/photos/red-leather-handbag-on-white-table-oCXVxwTFwqE",
-                                                   "https://unsplash.com/photos/brown-leather-handbag-on-white-table-XwjrPFW7xw0",
-                                                   "https://unsplash.com/photos/woman-in-white-lace-tank-top-carrying-brown-leather-sling-bag-TLoMyRdcQOE"}
+                "Shoulder bags", new List<string>{ "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                                   "https://images.unsplash.com/photo-1624687943971-e86af76d57de?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                                   "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             },
             {
-                "Travel bags", new List<string>{ "https://unsplash.com/photos/brown-leather-satchel-bag-on-gray-concrete-surface-near-green-plant-at-daytime-pFLNV4gkXsc",
-                                                 "https://unsplash.com/photos/red-supreme-bag-V_vgvY8ZSsk",
-                                                 "https://unsplash.com/photos/person-holding-brown-leather-sling-bag-NqZ2vFqChaw"}
+                "Travel bags", new List<string>{ "https://images.unsplash.com/photo-1473188588951-666fce8e7c68?q=80&w=1948&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                                 "https://images.unsplash.com/photo-1564982759617-29646f69025c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                                 "https://images.unsplash.com/photo-1608731267464-c0c889c2ff92?q=80&w=1886&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             },
             {
-                "Jewellery", new List<string>{ "https://unsplash.com/photos/brown-leather-backpack-on-white-surface-3o-X8WJOP5E",
-                                               "https://unsplash.com/photos/a-necklace-with-white-flowers-on-a-gold-chain-rvF5EglUXWg",
-                                               "https://unsplash.com/photos/a-womans-hand-holding-onto-a-bracelet-n93BVI_sPZ4"}
+                "Jewellery", new List<string>{ "https://images.unsplash.com/photo-1631982690223-8aa4be0a2497?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                               "https://images.unsplash.com/photo-1685970731571-72ede0cb26ea?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                               "https://images.unsplash.com/photo-1723522938865-3df1a9399fd5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             },
             {
-                "Sunglasses", new List<string>{ "https://unsplash.com/photos/brown-leather-backpack-on-white-surface-3o-X8WJOP5E",
-                                                "https://unsplash.com/photos/a-necklace-with-white-flowers-on-a-gold-chain-rvF5EglUXWg",
-                                                "https://unsplash.com/photos/a-womans-hand-holding-onto-a-bracelet-n93BVI_sPZ4" }
+                "Sunglasses", new List<string>{ "https://images.unsplash.com/photo-1508296695146-257a814070b4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3VuZ2xhc3Nlc3xlbnwwfHwwfHx8Mg%3D%3D",
+                                                "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHN1bmdsYXNzZXN8ZW58MHx8MHx8fDI%3D",
+                                                "https://images.unsplash.com/photo-1502767089025-6572583495f9?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHN1bmdsYXNzZXN8ZW58MHx8MHx8fDI%3D" }
             },
             {
-                "Belts", new List<string>{"https://unsplash.com/photos/a-pair-of-sunglasses-on-a-table-tRu15nFN3Pw",
-                                          "https://unsplash.com/photos/a-leather-belt-on-a-black-surface-eNEa7Gsfzzs",
-                                          "https://unsplash.com/photos/a-close-up-of-a-leather-belt-on-a-bench-Mf194wsFKZI"}
+                "Belts", new List<string>{"https://images.unsplash.com/photo-1666723043169-22e29545675c?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                          "https://images.unsplash.com/photo-1664286074176-5206ee5dc878?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                          "https://images.unsplash.com/photo-1684510334550-0c4fa8aaffd1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             },
             {
-                "Watches", new List<string>{"https://unsplash.com/photos/gold-link-bracelet-black-and-gold-square-watch-FoMMuiXO4FE",
-                                            "https://unsplash.com/photos/person-wearing-silver-aluminum-case-apple-watch-with-white-sport-band-YWnFeV-MvRE",
-                                            "https://unsplash.com/photos/person-wearing-round-silver-colored-analog-watch-at-119-XcUJUO2AqVA"}
+                "Watches", new List<string>{"https://images.unsplash.com/photo-1613177794106-be20802b11d3?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                            "https://images.unsplash.com/photo-1591147810559-9ae8cc24c862?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                                            "https://images.unsplash.com/photo-1506796684999-9fa2770af9c3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
             }
         };
 
@@ -530,5 +531,4 @@ namespace TrendLoop.Data.Seed
             await dbContext.SaveChangesAsync();
         }
     }
-
 }
