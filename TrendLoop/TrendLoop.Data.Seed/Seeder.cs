@@ -463,72 +463,73 @@ namespace TrendLoop.Data.Seed
 
         private async Task GenerateProducts(int productsCount)
         {
-            Random random = new Random();
-            List<Product> newProducts = new List<Product>();
-
-            for (int i = 0; i <= productsCount; i++)
+            if (!dbContext.Products.Any())
             {
-                // create empty product
-                Product newProduct = new Product();
-                // select random brand
-                int brandId = brands[random.Next(0, brands.Count)].Id;
-                // select random category Id
-                int categoryId = categories[random.Next(0, categories.Count)].Id;
-                // find the corresponding category
-                Category category = await dbContext.Categories
-                    .Include(c => c.Subcategories)
-                    .ThenInclude(sc => sc.SubcategoryAttributeTypes)
-                    .ThenInclude(scat => scat.AttributeType)
-                    .ThenInclude(av => av.AttributeValues)
-                    .FirstOrDefaultAsync(c => c.Id == categoryId);
+                Random random = new Random();
+                List<Product> newProducts = new List<Product>();
 
-                // from category select random subcategory
-                Subcategory subcategory = category.Subcategories.ElementAt(random.Next(category.Subcategories.Count()));
-
-                // create attribute values for the product, depending on attribute types of its subcategory
-                List<ProductAttributeValue> productAttributeValues = new List<ProductAttributeValue>();
-                foreach (SubcategoryAttributeType attributeTypeForSubcategory in subcategory.SubcategoryAttributeTypes)
+                for (int i = 0; i <= productsCount; i++)
                 {
-                    // create empty product-attribute value object
-                    ProductAttributeValue productAttributeValue = new ProductAttributeValue();
-                   
-                    // assign product
-                    productAttributeValue.Product = newProduct;
-                    productAttributeValue.ProductId = newProduct.Id;
+                    // create empty product
+                    Product newProduct = new Product();
+                    // select random brand
+                    int brandId = brands[random.Next(0, brands.Count)].Id;
+                    // select random category Id
+                    int categoryId = categories[random.Next(0, categories.Count)].Id;
+                    // find the corresponding category
+                    Category category = await dbContext.Categories
+                        .Include(c => c.Subcategories)
+                        .ThenInclude(sc => sc.SubcategoryAttributeTypes)
+                        .ThenInclude(scat => scat.AttributeType)
+                        .ThenInclude(av => av.AttributeValues)
+                        .FirstOrDefaultAsync(c => c.Id == categoryId);
 
-                    // assign attribute value id for product-attribute value object
-                    List<AttributeValue> attributeValuesForAttributeType = attributeTypeForSubcategory.AttributeType.AttributeValues.ToList();
-                    AttributeValue attributeValueForProduct = attributeValuesForAttributeType[random.Next(0, attributeValuesForAttributeType.Count)];
-                    
-                    productAttributeValue.AttributeValue = attributeValueForProduct;
-                    productAttributeValue.AttributeValueId = attributeValueForProduct.Id;
-                    
-                    // add to collection
-                    productAttributeValues.Add(productAttributeValue);
+                    // from category select random subcategory
+                    Subcategory subcategory = category.Subcategories.ElementAt(random.Next(category.Subcategories.Count()));
+
+                    // create attribute values for the product, depending on attribute types of its subcategory
+                    List<ProductAttributeValue> productAttributeValues = new List<ProductAttributeValue>();
+                    foreach (SubcategoryAttributeType attributeTypeForSubcategory in subcategory.SubcategoryAttributeTypes)
+                    {
+                        // create empty product-attribute value object
+                        ProductAttributeValue productAttributeValue = new ProductAttributeValue();
+
+                        // assign product
+                        productAttributeValue.Product = newProduct;
+                        productAttributeValue.ProductId = newProduct.Id;
+
+                        // assign attribute value id for product-attribute value object
+                        List<AttributeValue> attributeValuesForAttributeType = attributeTypeForSubcategory.AttributeType.AttributeValues.ToList();
+                        AttributeValue attributeValueForProduct = attributeValuesForAttributeType[random.Next(0, attributeValuesForAttributeType.Count)];
+
+                        productAttributeValue.AttributeValue = attributeValueForProduct;
+                        productAttributeValue.AttributeValueId = attributeValueForProduct.Id;
+
+                        // add to collection
+                        productAttributeValues.Add(productAttributeValue);
+                    }
+                    // extract the string value representation of the Size attribute type, stored in the corresponding product-attribute value object
+
+                    // TODO: fix naming for plural
+                    newProduct.Name = $"{brands.FirstOrDefault(b => b.Id == brandId).Name} {subcategory.Name.Singularize()}";
+                    newProduct.AddedOn = DateTime.Now;
+                    newProduct.BrandId = brandId;
+                    newProduct.CategoryId = category.Id;
+                    newProduct.SubcategoryId = subcategory.Id;
+                    newProduct.ImageUrl = imagesBySubcategory[subcategory.Name][random.Next(0, imagesBySubcategory[subcategory.Name].Count)];
+                    newProduct.Price = Math.Round((decimal)(random.NextDouble() * (maxPrice - minPrice) + minPrice), 2);
+                    newProduct.Description = productDescriptions[random.Next(0, productDescriptions.Count)];
+                    newProduct.Seller = await userManager.FindByEmailAsync(users.Keys.ToList()[random.Next(0, users.Keys.Count)]);
+
+                    // assign product-attribute values for product
+                    newProduct.ProductAttributeValues = productAttributeValues;
+
+                    newProducts.Add(newProduct);
                 }
-                // extract the string value representation of the Size attribute type, stored in the corresponding product-attribute value object
-                string productSize = productAttributeValues
-                    .FirstOrDefault(pav => pav.AttributeValue.AttributeType.Name.ToLower().Contains("size"))
-                    .AttributeValue.Value;
-                
-                newProduct.Name = $"{brands.FirstOrDefault(b => b.Id == brandId).Name} {subcategory.Name.Singularize()} {productSize} Size";
-                newProduct.AddedOn = DateTime.Now;
-                newProduct.BrandId = brandId;
-                newProduct.CategoryId = category.Id;
-                newProduct.SubcategoryId = subcategory.Id;
-                newProduct.ImageUrl = imagesBySubcategory[subcategory.Name][random.Next(0, imagesBySubcategory[subcategory.Name].Count)];
-                newProduct.Price = Math.Round((decimal)(random.NextDouble() * (maxPrice - minPrice) + minPrice), 2);
-                newProduct.Description = productDescriptions[random.Next(0, productDescriptions.Count)];
-                newProduct.Seller = await userManager.FindByEmailAsync(users.Keys.ToList()[random.Next(0, users.Keys.Count)]);
 
-                // assign product-attribute values for product
-                newProduct.ProductAttributeValues = productAttributeValues;
-
-                newProducts.Add(newProduct);
+                await dbContext.AddRangeAsync(newProducts);
+                await dbContext.SaveChangesAsync();
             }
-
-            await dbContext.AddRangeAsync(newProducts);
-            await dbContext.SaveChangesAsync();
         }
     }
 }

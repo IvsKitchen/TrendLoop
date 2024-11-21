@@ -20,3 +20,26 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.card:hover {
+    box-shadow: 20px 20px 80px -44px #000;
+    transition: .25s ease-in-out;
+    cursor: pointer;
+}
+
+.card-title {
+    text-align: left;
+    font-size: 18px;
+    padding:  10px 0px 10px 0px;
+}
+
+.card-text {
+    text-align: left;
+    font-size: 16px;
+}
+
+.card-text-price {
+    text-align: right;
+    font-size: 18px;
+    font-weight: bold;
+}
