@@ -2,7 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TrendLoop.Data;
 using TrendLoop.Data.Models;
+using TrendLoop.Data.Repository;
+using TrendLoop.Data.Repository.Interfaces;
 using TrendLoop.Data.Seed;
+using TrendLoop.Services.Data;
+using TrendLoop.Services.Data.Interfaces;
 
 namespace TrendLoop
 {
@@ -30,14 +34,19 @@ namespace TrendLoop
               .AddEntityFrameworkStores<TrendLoopDbContext>();
             builder.Services.AddControllersWithViews();
 
+            // Register repository
+
+            builder.Services.AddScoped<IRepository<Product, Guid>, BaseRepository<Product, Guid>>();
+
+            builder.Services.AddScoped<IProductService, ProductService>();
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<TrendLoopDbContext>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                // You can now use dbContext to interact with the database
-                // For example, call a seed method if you want to seed data:
+                // Seed the DB
                 Seeder seeder = new Seeder(userManager, dbContext);
                 await seeder.SeedDb(10);
             }
