@@ -13,7 +13,7 @@ namespace TrendLoop.Web.ViewModels
 
         public string Price { get; set; } = null!;
 
-        public string Size { get; set; } = null;
+        public string Size { get; set; } = null!;
 
         public string? ImageUrl { get; set; }
 
@@ -26,5 +26,9 @@ namespace TrendLoop.Web.ViewModels
         public string SubcategoryName { get; set; } = null!;
 
         public string SellerName { get; set; } = null!;
+
+        public double SellerRating { get; set; }
+
+        public string SellerAvatarUrl { get; set; } = null!;
     }
 }

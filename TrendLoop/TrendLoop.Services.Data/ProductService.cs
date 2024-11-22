@@ -35,7 +35,9 @@ namespace TrendLoop.Services.Data
                     BrandName = p.Brand.Name,
                     CategoryName = p.Category.Name,
                     SubcategoryName = p.Subcategory.Name,
-                    SellerName = p.Seller.UserName
+                    SellerName = p.Seller.UserName,
+                    SellerRating = p.Seller.SellerRating,
+                    SellerAvatarUrl = p.Seller.AvatarUrl
                 })
                 .ToListAsync();
         }

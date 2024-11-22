@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TrendLoop.Data.Models;
-using static System.Net.WebRequestMethods;
 
 namespace TrendLoop.Data.Seed
 {
@@ -15,7 +14,7 @@ namespace TrendLoop.Data.Seed
         private static double maxPrice = 1000;
 
         // Users
-        private Dictionary<string, string> users = new Dictionary<string, string>()
+        private static Dictionary<string, string> users = new Dictionary<string, string>()
         {
             { "john.doe@mailbox.com", "John123!" },
             { "jane.smith@outlook.net", "Jane456!" },
@@ -29,8 +28,23 @@ namespace TrendLoop.Data.Seed
             { "mia.clark@freshmail.net", "Mia789!" }
         };
 
+
+        private static List<string> userAvatars = new List<string>()
+        {
+            "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d29tYW4lMjBhdmF0YXJ8ZW58MHx8MHx8fDA%3D",
+            "https://images.unsplash.com/photo-1701615004837-40d8573b6652?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjV8fHdvbWFuJTIwYXZhdGFyfGVufDB8fDB8fHwy",
+            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHdvbWFuJTIwYXZhdGFyfGVufDB8fDB8fHww",
+            "https://images.unsplash.com/photo-1440589473619-3cde28941638?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjJ8fHdvbWFuJTIwYXZhdGFyfGVufDB8fDB8fHwy",
+            "https://images.unsplash.com/photo-1702482527875-e16d07f0d91b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjh8fHdvbWFuJTIwYXZhdGFyfGVufDB8fDB8fHww",
+            "https://images.unsplash.com/photo-1475180098004-ca77a66827be?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODJ8fHdvbWFuJTIwYXZhdGFyfGVufDB8fDB8fHwy",
+            "https://images.unsplash.com/photo-1651346158507-a2810590687f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzl8fHdvbWFuJTIwYXZhdGFyfGVufDB8fDB8fHww",
+            "https://images.unsplash.com/photo-1495924979005-79104481a52f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjN8fHdvbWFuJTIwYXZhdGFyfGVufDB8fDB8fHww",
+            "https://images.unsplash.com/photo-1469460340997-2f854421e72f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODR8fHdvbWFuJTIwYXZhdGFyfGVufDB8fDB8fHwy",
+            "https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8ODB8fHdvbWFuJTIwYXZhdGFyfGVufDB8fDB8fHww"
+        };
+
         // Brands
-        private static List<Brand> brands = new List<Brand>()
+        private static List<Brand> brands = new List<Models.Brand>()
         {
             new Brand { Id = 1, Name = "Caro Mio" },
             new Brand { Id = 2, Name = "Celeste di Oro" },
@@ -319,10 +333,13 @@ namespace TrendLoop.Data.Seed
         {
             if (!dbContext.Users.Any())
             {
+                Random random = new Random();
+
                 foreach (var emailPassWordPair in users)
                 {
-
                     var user = new ApplicationUser { Email = emailPassWordPair.Key, UserName = emailPassWordPair.Key };
+                    user.SellerRating = random.Next(2, 11) * 0.5;
+                    user.AvatarUrl = userAvatars[random.Next(0, userAvatars.Count)];
                     var result = await userManager.CreateAsync(user, emailPassWordPair.Value);
 
                     if (!result.Succeeded)
@@ -344,7 +361,7 @@ namespace TrendLoop.Data.Seed
                 try
                 {
                     await dbContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Brands ON");
-                    await dbContext.Brands.AddRangeAsync(brands); // Insert explicitly set Ids
+                    await dbContext.Brands.AddRangeAsync(brands);
                     await dbContext.SaveChangesAsync();
                     await dbContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Brands OFF");
                     await transaction.CommitAsync();
