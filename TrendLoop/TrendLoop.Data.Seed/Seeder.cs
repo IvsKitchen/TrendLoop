@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TrendLoop.Data.Models;
+using System.Collections.Specialized;
+using System.Collections.Generic;
 
 namespace TrendLoop.Data.Seed
 {
@@ -335,11 +337,12 @@ namespace TrendLoop.Data.Seed
             {
                 Random random = new Random();
 
-                foreach (var emailPassWordPair in users)
+                foreach (KeyValuePair<string, string> emailPassWordPair in users)
                 {
                     var user = new ApplicationUser { Email = emailPassWordPair.Key, UserName = emailPassWordPair.Key };
                     user.SellerRating = random.Next(2, 11) * 0.5;
-                    user.AvatarUrl = userAvatars[random.Next(0, userAvatars.Count)];
+                    // get index of the key, so that each user has the corresponding avatar index
+                    user.AvatarUrl = userAvatars[users.Keys.ToList().IndexOf(emailPassWordPair.Key)];
                     var result = await userManager.CreateAsync(user, emailPassWordPair.Value);
 
                     if (!result.Succeeded)

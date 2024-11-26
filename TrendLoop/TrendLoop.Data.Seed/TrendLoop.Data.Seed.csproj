@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TrendLoop.Data.Models\TrendLoop.Data.Models.csproj" />
     <ProjectReference Include="..\TrendLoop.Data\TrendLoop.Data.csproj" />
   </ItemGroup>

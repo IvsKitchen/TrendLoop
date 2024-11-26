@@ -17,7 +17,7 @@ namespace TrendLoop.Data.Models
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
-        // TODO make required
+        [Required]
         [Range(typeof(decimal), PriceMinValueAsString, PriceMaxValueAsString)]
         public decimal Price { get; set; }
 

@@ -4,7 +4,7 @@ namespace TrendLoop.Data.Models
 {
     public class ApplicationUser : IdentityUser<Guid>
     {
-        public string AvatarUrl { get; set; }
+        public string? AvatarUrl { get; set; }
 
         public double SellerRating { get; set; }
 

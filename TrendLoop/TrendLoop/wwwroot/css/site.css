@@ -43,3 +43,9 @@ body {
     font-size: 18px;
     font-weight: bold;
 }
+
+.user-avatar {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
