@@ -12,8 +12,8 @@ using TrendLoop.Data;
 namespace TrendLoop.Data.Migrations
 {
     [DbContext(typeof(TrendLoopDbContext))]
-    [Migration("20241122093346_SetAvatarNullarble")]
-    partial class SetAvatarNullarble
+    [Migration("20241127075844_ReplaceSubcategoryInAttributeType")]
+    partial class ReplaceSubcategoryInAttributeType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -396,9 +396,6 @@ namespace TrendLoop.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AttributeTypeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -411,8 +408,6 @@ namespace TrendLoop.Data.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AttributeTypeId");
 
                     b.HasIndex("CategoryId");
 
@@ -559,10 +554,6 @@ namespace TrendLoop.Data.Migrations
 
             modelBuilder.Entity("TrendLoop.Data.Models.Subcategory", b =>
                 {
-                    b.HasOne("TrendLoop.Data.Models.AttributeType", null)
-                        .WithMany("Subcategories")
-                        .HasForeignKey("AttributeTypeId");
-
                     b.HasOne("TrendLoop.Data.Models.Category", "Category")
                         .WithMany("Subcategories")
                         .HasForeignKey("CategoryId")
@@ -575,7 +566,7 @@ namespace TrendLoop.Data.Migrations
             modelBuilder.Entity("TrendLoop.Data.Models.SubcategoryAttributeType", b =>
                 {
                     b.HasOne("TrendLoop.Data.Models.AttributeType", "AttributeType")
-                        .WithMany()
+                        .WithMany("SubcategoryAttributeTypes")
                         .HasForeignKey("AttributeTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -602,7 +593,7 @@ namespace TrendLoop.Data.Migrations
                 {
                     b.Navigation("AttributeValues");
 
-                    b.Navigation("Subcategories");
+                    b.Navigation("SubcategoryAttributeTypes");
                 });
 
             modelBuilder.Entity("TrendLoop.Data.Models.Brand", b =>

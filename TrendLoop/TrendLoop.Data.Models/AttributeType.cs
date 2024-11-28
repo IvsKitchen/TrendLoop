@@ -13,7 +13,7 @@ namespace TrendLoop.Data.Models
         [MaxLength(NameMaxLength)]
         public string Name { get; set; } = null!;
 
-        public virtual ICollection<Subcategory> Subcategories { get; set; } = new HashSet<Subcategory>();
+        public virtual ICollection<SubcategoryAttributeType> SubcategoryAttributeTypes { get; set; } = new HashSet<SubcategoryAttributeType>();
 
         public virtual ICollection<AttributeValue> AttributeValues { get; set; } = new HashSet<AttributeValue>();
     }

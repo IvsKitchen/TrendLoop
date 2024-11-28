@@ -1,13 +1,40 @@
-﻿ @model IEnumerable<AllProductsIndexViewModel>
+﻿
+@model IEnumerable<AllProductsIndexViewModel>
 @{
     ViewData["Title"] = "Products List";
 }
-
+<div class="d-flex justify-content-left align-items-center mb-3" style="margin-top: 20px;">
+    @if (User?.Identity?.IsAuthenticated == true)
+    {
+        <a asp-controller="Product" asp-action="Add" class="btn btn-primary"><i class="fas fa-plus"></i>Add Product</a>
+    }
+</div>
 <div class="row text-center">
     @foreach (var product in Model)
     {
         <div class="col-md-3 mb-4">
             <div class="card h-100" style="width: 100%;">
+                <div class="user-container">
+                    <img class="user-avatar" src="@product.SellerAvatarUrl" alt="Avatar">
+                    <div class="rating">
+                        @for (int i = 1; i < 6; i++)
+                        {
+                            if (product.SellerRating - i >= 0)
+                            {
+                                <i class="fa-solid fa-star fa-sm"></i>
+                            }
+                            else if (i - product.SellerRating == 0.5)
+                            {
+                                <i class="fa-solid fa-star-half fa-sm"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-regular fa-star fa-sm"></i>
+                            }
+                        }
+                    </div>
+                </div>
+                
                 @if (!string.IsNullOrEmpty(product.ImageUrl))
                 {
                     <img src="@product.ImageUrl" class="card-img-top" style="max-height: 200px; object-fit: cover;" alt="@product.Name">
@@ -22,6 +49,7 @@
                     <h4 class="card-title">@product.Name</h4>
                     <h4 class="card-text-price">@product.Price€</h4>
                     <p class="card-text">Size: @product.Size</p>
+                    <p class="card-text">Material: @product.Size</p>
                     <p class="card-text">Added on: @product.AddedOn</p>
                     
                     <div class="d-flex justify-content-between mt-auto">
@@ -41,5 +69,4 @@
                 </div>
             </div>
         </div>
-    }
-</div>
+}
