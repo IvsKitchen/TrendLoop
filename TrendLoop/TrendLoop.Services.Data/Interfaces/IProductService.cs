@@ -2,8 +2,10 @@
 
 namespace TrendLoop.Services.Data.Interfaces
 {
-    public interface IProductService : IBaseService
+    public interface IProductService
     {
         Task<IEnumerable<AllProductsIndexViewModel>> GetAllProductsAsync();
+
+        Task<bool> AddProductAsync(Guid sellerId, AddProductViewModel model);
     }
 }

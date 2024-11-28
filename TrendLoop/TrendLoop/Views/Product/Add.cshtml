@@ -1,0 +1,192 @@
+﻿@model AddProductViewModel
+@{
+    ViewData["Title"] = "Add Product";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    <h2>@ViewData["Title"]</h2>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-action="Add" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-sm-6 mb-2">
+                    <label asp-for="@Model.Name" class="form-label-add-edit">Product Name</label>
+                    <input asp-for="@Model.Name" class="form-control" aria-required="true" />
+                    <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6 mb-2">
+                    <label asp-for="@Model.Price" class="form-label-add-edit">Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text">€</span>
+                        <input asp-for="Price" class="form-control" aria-required="true" type="number" step="0.01" min="0" />
+                    </div>
+                    <span asp-validation-for="@Model.Price" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-2">
+                <label asp-for="@Model.Description" class="form-label-add-edit">Description</label>
+                <textarea asp-for="@Model.Description" class="form-control" aria-required="true" rows="2"></textarea>
+                <span asp-validation-for="@Model.Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-2">
+                <label asp-for="@Model.ImageUrl" class="form-label-add-edit">ImageURL</label>
+                <input asp-for="@Model.ImageUrl" class="form-control" aria-required="false" placeholder="Enter image URL (optional)" />
+                <span asp-validation-for="@Model.ImageUrl" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 mb-2">
+                    <label asp-for="@Model.BrandId" class="form-label-add-edit">Select Brand</label>
+                    <select asp-for="@Model.BrandId" class="form-control" id="brandId" aria-required="true">
+                        <option value="">Select Brand...</option>
+                        <!-- Brands will be dynamically appended here -->
+                    </select>
+                    <span asp-validation-for="@Model.BrandId" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6 mb-2">
+                    <label asp-for="@Model.CategoryId" class="form-label-add-edit">Select Category</label>
+                    <select asp-for="@Model.CategoryId" class="form-control" id="categoryId" aria-required="true">
+                        <option disabled selected>Select Category...</option>
+                        <!-- Categories will be dynamically appended here -->
+                    </select>
+                    <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6 mb-2">
+                    <label asp-for="@Model.SubcategoryId" class="form-label-add-edit">Select Subcategory</label>
+                    <select asp-for="@Model.SubcategoryId" class="form-control" id="subcategoryId" aria-required="true">
+                        <option disabled selected>Select Subcategory...</option>
+                        <!-- Subcategories will be dynamically appended here -->
+                    </select>
+                    <span asp-validation-for="@Model.SubcategoryId" class="text-danger"></span>
+                </div>
+                <div id="attributesContainer">
+                    <!-- Attribute types will be dynamically appended here -->
+                </div>
+            </div>
+            <div class="mb-2">
+                <input class="btn btn-warning btn-dark-text w-100 py-2 fw-bold rounded" type="submit" value="Save" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            // Initialize functionality
+            //-- Load brands
+            getBrands();
+            //-- Load categories
+            getCategories();
+
+            // Bind events
+            //--Load subcategories for selected category
+            $("#categoryId").change(getSubcategoriesByCategoryId);
+            //--Load attribute types for selected subcategory
+            $("#subcategoryId").change(getAttributeTypesBySubcategoryId);
+        });
+
+       // get all brands
+        var getBrands = function(){
+            $.ajax({
+                url: '@Url.Action("GetBrands", "Product")',
+                type: 'GET',
+                data: {
+                    brandId: $('#brandId').val(),
+                },
+                success: function (data) {
+                    // empty category select and set default select option
+                    $("#brandId").empty().append('<option disabled selected>Select Brand...</option>');
+                    $(data).each(
+                        function (index, item) {
+                            $("#brandId").append('<option value="' + item.id + '">' + item.name + '</option>')
+                        }
+                    );
+                }
+            })
+        }
+
+        // get all categories
+        var getCategories = function(){
+            $.ajax({
+                url: '@Url.Action("GetCategories", "Product")',
+                type: 'GET',
+                data: {
+                    categoryId: $('#categoryId').val(),
+                },
+                success: function (data) {
+                    // empty category select and set default select option
+                    $("#categoryId").empty().append('<option disabled selected>Select Category...</option>');
+                    $(data).each(
+                        function (index, item) {
+                            $("#categoryId").append('<option value="' + item.id + '">' + item.name + '</option>')
+                        }
+                    );
+                }
+            })
+        }
+
+        // get all subcategories for selected category
+        var getSubcategoriesByCategoryId = function (){
+            // Clear the attribute types container
+            $("#attributesContainer").empty();
+
+            $.ajax({
+                url: '@Url.Action("GetSubcategoriesByCategoryId", "Product")',
+                type: 'GET',
+                data: {
+                    categoryId: $('#categoryId').val(),
+                },
+                success: function (data) {
+                    // empty subcategory select and set default select option
+                    $("#subcategoryId").empty().append('<option disabled selected>Select Subcategory...</option>');
+                    $(data).each(
+                        function (index, item) {
+                            $("#subcategoryId").append('<option value="' + item.id + '">' + item.name + '</option>')
+                        }
+                    );
+                }
+            })
+        }
+
+    var getAttributeTypesBySubcategoryId = function () {
+    $.ajax({
+        url: '@Url.Action("GetAttributeTypesBySubcategoryId", "Product")',
+        type: 'GET',
+        data: {
+            subcategoryId: $('#subcategoryId').val(),
+        },
+        success: function (data) {
+            // Clear the attribute section
+            $("#attributesContainer").empty();
+
+            // Loop through each AttributeTypeInfoViewModel
+            $(data).each(function (index, attributeType) {
+                var section = `<div class="attribute-section">${attributeType.name}</div>`;
+
+                // Loop through attribute values of the current attribute type
+                $(attributeType.attributeValues).each(function (subIndex, attributeValue) {
+                    var radioButton = `
+                                        <div class="form-check">
+                                            <input type="radio" name="AttributeTypeIdAttributeValueIdPair[${attributeType.id}]" id="value_${attributeValue.id}" value="${attributeValue.id}">
+                                            <label class="form-check-label" for="value_${attributeValue.id}">${attributeValue.value}</label>
+                                        </div>`;
+                    section += radioButton;
+                });
+
+                // Append the section for the current attribute type
+                $("#attributesContainer").append(section);
+            });
+        },
+        error: function () {
+            console.error("An error occurred while fetching attributes.");
+        }
+    });
+};
+    </script>
+}

@@ -4,8 +4,6 @@ using TrendLoop.Data.Repository.Interfaces;
 using TrendLoop.Services.Data.Interfaces;
 using TrendLoop.Web.ViewModels;
 
-using static TrendLoop.Common.EntityValidationConstants.Product;
-
 namespace TrendLoop.Services.Data
 {
     public class ProductService : BaseService, IProductService
@@ -40,6 +38,41 @@ namespace TrendLoop.Services.Data
                     SellerAvatarUrl = p.Seller.AvatarUrl
                 })
                 .ToListAsync();
+        }
+
+        public async Task<bool> AddProductAsync(Guid sellerId, AddProductViewModel model)
+        {
+            Product product = new Product()
+            {
+                Name = model.Name,
+                Description = model.Description,
+                BrandId = model.BrandId,
+                CategoryId = model.CategoryId,
+                SubcategoryId = model.SubcategoryId,
+                Price = model.Price,
+                ImageUrl = model.ImageUrl,
+                AddedOn = DateTime.Now,
+                SellerId = sellerId,
+            };
+
+            List<ProductAttributeValue> productAttributeValues = new List<ProductAttributeValue>();
+
+            foreach (var attTypeIdAttValueId in model.AttributeTypeIdAttributeValueIdPair)
+            {
+                ProductAttributeValue productAttribute = new ProductAttributeValue()
+                {
+                    ProductId = product.Id,
+                    AttributeValueId = attTypeIdAttValueId.Value
+                };
+
+                productAttributeValues.Add(productAttribute);
+            }
+
+            product.ProductAttributeValues = productAttributeValues;
+
+            await this.productRepository.AddAsync(product);
+
+            return true;
         }
     }
 }

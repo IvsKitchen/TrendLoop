@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.23.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TrendLoop.Common\TrendLoop.Common.csproj" />
     <ProjectReference Include="..\TrendLoop.Data.Models\TrendLoop.Data.Models.csproj" />
     <ProjectReference Include="..\TrendLoop.Data\TrendLoop.Data.csproj" />

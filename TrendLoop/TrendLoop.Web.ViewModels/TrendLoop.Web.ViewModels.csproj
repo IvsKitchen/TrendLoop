@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TrendLoop.Common\TrendLoop.Common.csproj" />
+    <ProjectReference Include="..\TrendLoop.Data.Models\TrendLoop.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>

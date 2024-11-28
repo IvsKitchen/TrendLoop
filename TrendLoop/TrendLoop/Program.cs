@@ -25,6 +25,7 @@ namespace TrendLoop
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
+                // by default '@' is not allowed symbol in username, include it in order to use the email as username
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
@@ -34,10 +35,20 @@ namespace TrendLoop
               .AddEntityFrameworkStores<TrendLoopDbContext>();
             builder.Services.AddControllersWithViews();
 
-            // Register repository
-
+            // Register repositories
             builder.Services.AddScoped<IRepository<Product, Guid>, BaseRepository<Product, Guid>>();
+            builder.Services.AddScoped<IRepository<Brand, int>, BaseRepository<Brand, int>>();
+            builder.Services.AddScoped<IRepository<Category, int>, BaseRepository<Category, int>>();
+            builder.Services.AddScoped<IRepository<Subcategory, int>, BaseRepository<Subcategory, int>>();
+            builder.Services.AddScoped<IRepository<AttributeType, int>, BaseRepository<AttributeType, int>>();
+            builder.Services.AddScoped<IRepository<AttributeValue, int>, BaseRepository<AttributeValue, int>>();
 
+            // Register services
+            builder.Services.AddScoped<IBrandService, BrandService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<ISubcategoryService, SubcategoryService>();
+            builder.Services.AddScoped<IAttributeTypeService, AttributeTypeService>();
+            builder.Services.AddScoped<IAttributeValueService, AttributeValueService>();
             builder.Services.AddScoped<IProductService, ProductService>();
 
             var app = builder.Build();

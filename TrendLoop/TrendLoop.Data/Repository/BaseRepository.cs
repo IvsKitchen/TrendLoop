@@ -47,5 +47,17 @@ namespace TrendLoop.Data.Repository
         {
             return this.dbSet.AsQueryable();
         }
+
+        public void Add(TType entity)
+        {
+            this.dbSet.Add(entity);
+            this.dbContext.SaveChanges();
+        }
+
+        public async Task AddAsync(TType item)
+        {
+            await this.dbSet.AddAsync(item);
+            await this.dbContext.SaveChangesAsync();
+        }
     }
 }

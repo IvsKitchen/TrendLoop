@@ -18,5 +18,8 @@ namespace TrendLoop.Data.Repository.Interfaces
 
         // get all types, attached to DB
         IQueryable<TType> GetAllAttached();
+
+        // get all types, attached to DB
+        Task AddAsync(TType item);
     }
 }
