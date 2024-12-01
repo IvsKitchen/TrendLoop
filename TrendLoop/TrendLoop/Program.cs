@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TrendLoop.Data;
@@ -50,6 +51,7 @@ namespace TrendLoop
             builder.Services.AddScoped<IAttributeTypeService, AttributeTypeService>();
             builder.Services.AddScoped<IAttributeValueService, AttributeValueService>();
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddSingleton<IBlobService, AzureBlobService>();
 
             var app = builder.Build();
 

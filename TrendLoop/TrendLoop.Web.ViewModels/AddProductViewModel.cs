@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using static TrendLoop.Common.EntityValidationConstants.Product;
 namespace TrendLoop.Web.ViewModels
@@ -19,6 +20,8 @@ namespace TrendLoop.Web.ViewModels
 
         public string? ImageUrl { get; set; }
 
+        public IFormFile? ImageFile{ get; set; }
+
         [Required]
         public DateTime AddedOn { get; set; }
 
@@ -34,6 +37,8 @@ namespace TrendLoop.Web.ViewModels
         [Required]
         public Dictionary<int, int> AttributeTypeIdAttributeValueIdPair { get; set; } = new Dictionary<int, int>();
 
-        // TODO return the brands and categories
+        public IEnumerable<BrandInfoViewModel> Brands = new HashSet<BrandInfoViewModel>();
+
+        public IEnumerable<CategoryInfoViewModel> Categories = new HashSet<CategoryInfoViewModel>();
     }
 }

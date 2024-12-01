@@ -17,13 +17,15 @@ namespace TrendLoop.Controllers
         private readonly ISubcategoryService subcategoryService;
         private readonly IAttributeTypeService attributeTypeService;
         private readonly IProductService productService;
+        private readonly IBlobService blobService;
 
         public ProductController(UserManager<ApplicationUser> userManager,
                                  IBrandService brandService,
                                  ICategoryService categoryService,
                                  ISubcategoryService subcategoryService,
                                  IAttributeTypeService attributeTypeService,
-                                 IProductService productService)
+                                 IProductService productService,
+                                 IBlobService blobService)
         {
             this.userManager = userManager;
             this.brandService = brandService;
@@ -31,6 +33,7 @@ namespace TrendLoop.Controllers
             this.subcategoryService = subcategoryService;
             this.attributeTypeService = attributeTypeService;
             this.productService = productService;
+            this.blobService = blobService;
         }
 
         [HttpGet]
@@ -76,18 +79,27 @@ namespace TrendLoop.Controllers
 
             Guid userId = Guid.Empty;
             bool isIdValid = IsGuidValid(userManager.GetUserId(User), ref userId);
-            
-                if (isIdValid)
+
+            if (isIdValid)
+            {
+                // check if user has uploaded image file instead of URL
+                if (model.ImageFile != null)
                 {
+                    // upload file in Blob service and set the new URL
+                    model.ImageUrl = await blobService.UploadFileAsync(model.ImageFile);
+                }
+
                 bool result = await this.productService.AddProductAsync(userId, model);
                 if (result == false)
                 {
                     return this.View(model);
                 }
             }
-            
+
             return this.RedirectToAction(nameof(Index));
         }
+
+
 
         public async Task<JsonResult> GetSubcategoriesByCategoryId(int categoryId)
         {
