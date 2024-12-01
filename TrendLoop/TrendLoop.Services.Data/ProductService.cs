@@ -4,6 +4,8 @@ using TrendLoop.Data.Repository.Interfaces;
 using TrendLoop.Services.Data.Interfaces;
 using TrendLoop.Web.ViewModels;
 
+using static TrendLoop.Common.EntityValidationConstants.Product;
+
 namespace TrendLoop.Services.Data
 {
     public class ProductService : BaseService, IProductService
@@ -29,7 +31,7 @@ namespace TrendLoop.Services.Data
                     Price = p.Price.ToString("F2"),
                     Size = p.ProductAttributeValues.FirstOrDefault(pav => pav.AttributeValue.AttributeType.Name.ToLower().Contains("size")).AttributeValue.Value,
                     ImageUrl = p.ImageUrl,
-                    AddedOn = p.AddedOn.ToString("yyyy-MM-dd"),
+                    AddedOn = p.AddedOn.ToString(AddedOnDateFormat),
                     BrandName = p.Brand.Name,
                     CategoryName = p.Category.Name,
                     SubcategoryName = p.Subcategory.Name,
@@ -38,6 +40,36 @@ namespace TrendLoop.Services.Data
                     SellerAvatarUrl = p.Seller.AvatarUrl
                 })
                 .ToListAsync();
+        }
+
+        public async Task<ProductDetailsViewModel> GetProductDetailsAsync(Guid productId)
+        {
+            return await productRepository
+                .GetAllAttached()
+                .Where(p => !p.IsDeleted && p.Id == productId)
+                .Select(p => new ProductDetailsViewModel
+                {
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price.ToString("F2"),
+                    //Size = p.ProductAttributeValues.FirstOrDefault(pav => pav.AttributeValue.AttributeType.Name.ToLower().Contains("size")).AttributeValue.Value,
+                    ImageUrl = p.ImageUrl,
+                    AddedOn = p.AddedOn.ToString(AddedOnDateFormat),
+                    BrandName = p.Brand.Name,
+                    CategoryName = p.Category.Name,
+                    SubcategoryName = p.Subcategory.Name,
+                    SellerName = p.Seller.UserName,
+                    SellerRating = p.Seller.SellerRating,
+                    SellerAvatarUrl = p.Seller.AvatarUrl,
+                    AttributeTypesWithValues = p.ProductAttributeValues.Select(pav => new AttributeTypeValueInfoViewModel 
+                    { 
+                        AttributeTypeId = pav.AttributeValue.AttributeTypeId,
+                        AttributeTypeName = pav.AttributeValue.AttributeType.Name,
+                        AttributeValueId = pav.AttributeValueId,
+                        Value = pav.AttributeValue.Value
+                    })
+                })
+                .FirstOrDefaultAsync();
         }
 
         public async Task<bool> AddProductAsync(Guid sellerId, AddProductViewModel model)

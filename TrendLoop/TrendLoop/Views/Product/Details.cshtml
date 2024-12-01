@@ -1,0 +1,110 @@
+﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNetCore.Identity
+@using TrendLoop.Common
+
+@model ProductDetailsViewModel
+@{
+    ViewData["Title"] = "Product Details";
+}
+<div class="container mt-5">
+    <div class="seller-details d-flex align-items-center mb-4">
+        <!-- Seller Avatar -->
+        <img src="@Model.SellerAvatarUrl" alt="Seller Avatar" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px;">
+
+        <!-- Seller Info -->
+        <div>
+            <!-- Seller Name -->
+            <h5 class="mb-1">@Model.SellerName</h5>
+
+            <!-- Seller Rating -->
+            <div class="seller-rating">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    if (i <= Math.Floor(Model.SellerRating))
+                    {
+                        <i class="fa-solid fa-star fa-sm"></i> <!-- Full Star -->
+                    }
+                    else if (i <= Model.SellerRating)
+                    {
+                        <i class="fa-solid fa-star-half fa-sm"></i> <!-- Half Star -->
+                    }
+                    else
+                    {
+                        <i class="fa-regular fa-star fa-sm"></i> <!-- Empty Star -->
+                    }
+                }
+                <span class="text-muted">(@Model.SellerRating.ToString("0.0"))</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Product Image Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="product-image" id="product-image-details">
+                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded">
+            </div>
+        </div>
+
+        <!-- Product Details Section -->
+        <div class="col-lg-6">
+            <div class="product-details">
+                <h2 class="mb-3">@Model.Name</h2>
+                <!-- Brand -->
+                <p class="mb-2"><strong>Brand:</strong> @Model.BrandName</p>
+                <!-- Category -->
+                <p class="mb-2"><strong>Category:</strong> @Model.CategoryName</p>
+                <!-- Subcategory -->
+                <p class="mb-2"><strong>Subcategory:</strong> @Model.SubcategoryName</p>
+                <!-- Added On -->
+                <p class="mb-2"><strong>Added on:</strong> @Model.AddedOn</p>
+                <!-- Description -->
+                <p class="mb-2"><strong>Description:</strong> @Model.Description</p>
+                <!-- Price -->
+                <div class="product-price mt-4">
+                    <h4 class="text-primary">€@Model.Price</h4>
+                </div>
+
+                <!-- Product Attributes -->
+                <div class="product-attributes mt-4">
+                    <h5 class="mb-3">Product Details</h5>
+                    <ul class="list-group list-group-light">
+                        @foreach (var attributeTypeWithValue in Model.AttributeTypesWithValues)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">@StringHelper.SplitCamelCase(attributeTypeWithValue.AttributeTypeName)</span>
+                                <span>@attributeTypeWithValue.Value</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                <!-- Buttons -->
+                @if (User?.Identity?.IsAuthenticated == true &&  User?.Identity?.Name == @Model.SellerName)
+                {
+                    <div class="mt-4 d-flex align-items-center gap-1">
+                        <form asp-controller="Product" asp-action="Edit" method="post">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-primary btn-lg">Edit</button>
+                        </form>
+                        <form asp-controller="Product" asp-action="Delete" method="post">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-warning btn-lg">Delete</button>
+                        </form>
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-lg">Back to Products</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="mt-4 d-flex align-items-center gap-1">
+                        <form asp-controller="Product" asp-action="AddToCart" method="post">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-primary btn-lg">Buy</button>
+                        </form>
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-lg">Back to Products</a>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,6 +6,9 @@ namespace TrendLoop.Services.Data.Interfaces
     {
         Task<IEnumerable<AllProductsIndexViewModel>> GetAllProductsAsync();
 
+        Task<ProductDetailsViewModel> GetProductDetailsAsync(Guid productId);
+
         Task<bool> AddProductAsync(Guid sellerId, AddProductViewModel model);
+
     }
 }

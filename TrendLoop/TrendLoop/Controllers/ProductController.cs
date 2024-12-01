@@ -42,6 +42,13 @@ namespace TrendLoop.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var model = await productService.GetProductDetailsAsync(id);
+            return View(model);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Add()
         {
             bool isLoggedIn = await IsUserLoggedInAsync();
@@ -51,7 +58,8 @@ namespace TrendLoop.Controllers
             }
 
             var model = new AddProductViewModel();
-
+            model.Brands = await brandService.GetAllBrandsAsync();
+            model.Categories = await categoryService.GetAllCategoriesAsync();
             return View(model);
         }
 
@@ -61,15 +69,16 @@ namespace TrendLoop.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                // TODO return selected brand, category, subcategory etc.
+                model.Brands = await brandService.GetAllBrandsAsync();
+                model.Categories = await categoryService.GetAllCategoriesAsync();
                 return this.View(model);
             }
 
             Guid userId = Guid.Empty;
             bool isIdValid = IsGuidValid(userManager.GetUserId(User), ref userId);
             
-            if (isIdValid)
-            {
+                if (isIdValid)
+                {
                 bool result = await this.productService.AddProductAsync(userId, model);
                 if (result == false)
                 {
@@ -78,16 +87,6 @@ namespace TrendLoop.Controllers
             }
             
             return this.RedirectToAction(nameof(Index));
-        }
-
-        public async Task<JsonResult> GetBrands()
-        {
-            return Json(await brandService.GetAllBrandsAsync());
-        }
-
-        public async Task<JsonResult> GetCategories()
-        {
-            return Json(await categoryService.GetAllCategoriesAsync());
         }
 
         public async Task<JsonResult> GetSubcategoriesByCategoryId(int categoryId)
