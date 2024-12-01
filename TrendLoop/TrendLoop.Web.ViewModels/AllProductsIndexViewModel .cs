@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace TrendLoop.Web.ViewModels
+﻿namespace TrendLoop.Web.ViewModels
 {
     public class AllProductsIndexViewModel
     {
@@ -14,6 +11,8 @@ namespace TrendLoop.Web.ViewModels
         public string Price { get; set; } = null!;
 
         public string Size { get; set; } = null!;
+
+        // TODO: add material
 
         public string? ImageUrl { get; set; }
 

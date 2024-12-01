@@ -49,21 +49,29 @@
                     <h4 class="card-title">@product.Name</h4>
                     <h4 class="card-text-price">@product.Price€</h4>
                     <p class="card-text">Size: @product.Size</p>
-                    <p class="card-text">Material: @product.Size</p>
+                    <p class="card-text">Material:unknown</p>
                     <p class="card-text">Added on: @product.AddedOn</p>
-                    
-                    <div class="d-flex justify-content-between mt-auto">
+
+                    <div class="d-flex justify-content-end mt-auto gap-1">
                     @if (User?.Identity?.IsAuthenticated == true && product.SellerName != User.Identity.Name)
                     {
-                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-info me-2 w-50">Details</a>
-                        <form asp-controller="Product" asp-action="AddToCart" method="post" class="w-50">
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-info">Details</a>
+                        <form asp-controller="Product" asp-action="AddToCart" method="post">
                             <input type="hidden" name="id" value="@product.Id" />
-                            <button type="submit" class="btn btn-success w-100">Buy</button>
+                            <button type="submit" class="btn btn-success w-100">Add To Cart</button>
                         </form>
                     }
                     else
                     {
                         <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-info w-100">Details</a>
+                        <form asp-controller="Product" asp-action="Edit" method="post">
+                            <input type="hidden" name="id" value="@product.Id" />
+                            <button type="submit" class="btn btn-success w-100">Edit</button>
+                        </form>
+                        <form asp-controller="Product" asp-action="Delete" method="post">
+                            <input type="hidden" name="id" value="@product.Id" />
+                            <button type="submit" class="btn btn-warning w-100" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
+                        </form>
                     } 
                     </div>
                 </div>
