@@ -1,0 +1,43 @@
+﻿@model DeleteProductViewModel
+
+@{
+    ViewData["Title"] = "Delete Product Confirmation";
+}
+
+<div class="container">
+    <div class="text-center">
+        <img src="~/images/delete-product-illustration.png" alt="Delete Product Illustration" class="img-fluid" style="max-width: 500px;">
+    </div>
+
+    <!-- Confirmation Text -->
+    <div class="text-center">
+        <h5><strong>Are you sure you want to delete this product?</strong></h5>
+    </div>
+
+    <!-- Product Information Card -->
+    <div class="card-borderless mx-auto" style="max-width: 400px;">
+        <div class="card-body">
+            <table class="table">
+                <tr>
+                    <th scope="row" class="text-start text-muted">Product Name</th>
+                    <td class="text-end">@Model.Name</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text-start text-muted">Added On</th>
+                    <td class="text-end">@Model.AddedOn</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-center gap-4">
+        <!-- Cancel Button -->
+        <a asp-action="Index" class="btn btn-secondary btn-lg"><i class="fas fa-arrow-left"></i> Cancel</a>
+        <!-- Delete Button -->
+        <form asp-controller="Product" asp-action="SoftDeleteConfirmed" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn btn-danger btn-lg"><i class="fas fa-trash-alt"></i> Delete</button>
+        </form>
+    </div>
+</div>

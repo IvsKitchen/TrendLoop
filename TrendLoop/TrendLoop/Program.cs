@@ -37,6 +37,7 @@ namespace TrendLoop
             builder.Services.AddControllersWithViews();
 
             // Register repositories
+            builder.Services.AddScoped<IRepository<ApplicationUser, Guid>, BaseRepository<ApplicationUser, Guid>>();
             builder.Services.AddScoped<IRepository<Product, Guid>, BaseRepository<Product, Guid>>();
             builder.Services.AddScoped<IRepository<Brand, int>, BaseRepository<Brand, int>>();
             builder.Services.AddScoped<IRepository<Category, int>, BaseRepository<Category, int>>();
@@ -45,6 +46,7 @@ namespace TrendLoop
             builder.Services.AddScoped<IRepository<AttributeValue, int>, BaseRepository<AttributeValue, int>>();
 
             // Register services
+            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IBrandService, BrandService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<ISubcategoryService, SubcategoryService>();

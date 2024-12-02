@@ -4,22 +4,34 @@ namespace TrendLoop.Data.Repository.Interfaces
 {
     public interface IRepository<TType, TId>
     {
-        // get type by Id
+        // Get type by Id
         TType GetById(TId id);
 
-        // get type by Id async
+        // Get type by Id async
         Task<TType> GetByIdAsync(TId id);
 
-        // get all types, detached from DB
+        // Get all types, detached from DB
         IEnumerable<TType> GetAll();
 
-        // get all types, detached from DB async
+        // Get all types, detached from DB async
         Task<IEnumerable<TType>> GetAllAsync();
 
-        // get all types, attached to DB
+        // Get all types, attached to DB
         IQueryable<TType> GetAllAttached();
 
-        // get all types, attached to DB
+        // Get first or default type by given predicate
+        TType FirstOrDefault(Func<TType, bool> predicate);
+
+        // Get first or default type by given predicate async
+        Task<TType> FirstOrDefaultAsync(Expression<Func<TType, bool>> predicate);
+
+        // Get all types, attached to DB
         Task AddAsync(TType item);
+
+        // Update type 
+        bool Update(TType item);
+
+        // Update type async
+        Task<bool> UpdateAsync(TType item);
     }
 }

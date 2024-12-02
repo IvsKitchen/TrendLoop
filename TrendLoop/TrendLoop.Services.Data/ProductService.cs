@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TrendLoop.Common;
 using TrendLoop.Data.Models;
 using TrendLoop.Data.Repository.Interfaces;
 using TrendLoop.Services.Data.Interfaces;
@@ -15,7 +16,6 @@ namespace TrendLoop.Services.Data
         public ProductService(IRepository<Product, Guid> productRepository)
         {
             this.productRepository = productRepository;
-
         }
 
         public async Task<IEnumerable<AllProductsIndexViewModel>> GetAllProductsAsync()
@@ -105,6 +105,38 @@ namespace TrendLoop.Services.Data
             await this.productRepository.AddAsync(product);
 
             return true;
+        }
+
+        public async Task<DeleteProductViewModel?> GetProductForDeleteByIdAsync(Guid id)
+        {
+            DeleteProductViewModel? productToDelete = await this.productRepository
+                .GetAllAttached()
+                .Where(p => p.IsDeleted == false)
+                .Select(p => new DeleteProductViewModel
+                {
+                    Id = p.Id.ToString(),
+                    Name = p.Name,
+                    AddedOn = p.AddedOn.ToString(AddedOnDateFormat),
+                    SellerId = p.SellerId.ToString(),
+                    SellerName = p.Seller.UserName.ToString()
+                })
+                .FirstOrDefaultAsync(p => p.Id.ToLower() == id.ToString().ToLower());
+
+            return productToDelete;
+        }
+
+        public async Task<bool> SoftDeleteProductAsync(Guid id)
+        {
+            Product? productToDelete = await this.productRepository
+                .FirstOrDefaultAsync(p => p.Id.ToString().ToLower() == id.ToString().ToLower());
+            if (productToDelete == null)
+            {
+                return false;
+            }
+
+            productToDelete.IsDeleted = true;
+            // Since using soft delete technique only change flag for deletion and update
+            return await this.productRepository.UpdateAsync(productToDelete);
         }
     }
 }

@@ -58,20 +58,14 @@
                         <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-info">Details</a>
                         <form asp-controller="Product" asp-action="AddToCart" method="post">
                             <input type="hidden" name="id" value="@product.Id" />
-                            <button type="submit" class="btn btn-success w-100">Add To Cart</button>
+                            <button type="submit" class="btn btn-success">Add To Cart</button>
                         </form>
                     }
                     else
                     {
-                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-info w-100">Details</a>
-                        <form asp-controller="Product" asp-action="Edit" method="post">
-                            <input type="hidden" name="id" value="@product.Id" />
-                            <button type="submit" class="btn btn-success w-100">Edit</button>
-                        </form>
-                        <form asp-controller="Product" asp-action="Delete" method="post">
-                            <input type="hidden" name="id" value="@product.Id" />
-                            <button type="submit" class="btn btn-warning w-100" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
-                        </form>
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-info">Details</a>
+                        <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning">Edit</a>
+                        <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger">Delete</a>
                     } 
                     </div>
                 </div>

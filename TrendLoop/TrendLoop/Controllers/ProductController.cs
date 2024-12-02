@@ -12,6 +12,7 @@ namespace TrendLoop.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
 
+        private readonly IUserService userService;
         private readonly IBrandService brandService;
         private readonly ICategoryService categoryService;
         private readonly ISubcategoryService subcategoryService;
@@ -20,6 +21,7 @@ namespace TrendLoop.Controllers
         private readonly IBlobService blobService;
 
         public ProductController(UserManager<ApplicationUser> userManager,
+                                 IUserService userService,
                                  IBrandService brandService,
                                  ICategoryService categoryService,
                                  ISubcategoryService subcategoryService,
@@ -28,6 +30,7 @@ namespace TrendLoop.Controllers
                                  IBlobService blobService)
         {
             this.userManager = userManager;
+            this.userService = userService;
             this.brandService = brandService;
             this.categoryService = categoryService;
             this.subcategoryService = subcategoryService;
@@ -99,6 +102,73 @@ namespace TrendLoop.Controllers
             return this.RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Delete(string? id)
+        {
+            // Check Guid is valid
+            Guid productGuid = Guid.Empty;
+            if (!this.IsGuidValid(id, ref productGuid))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            DeleteProductViewModel? productToDeleteViewModel =
+                await this.productService.GetProductForDeleteByIdAsync(productGuid);
+            
+            if (productToDeleteViewModel == null)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            // Check if user is the product seller
+            bool isSeller = userManager.GetUserName(User) == productToDeleteViewModel.SellerName;
+            if (!isSeller)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            return this.View(productToDeleteViewModel);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> SoftDeleteConfirmed(DeleteProductViewModel model)
+        {
+            // Check Product ID
+            Guid productGuid = Guid.Empty;
+            if (!this.IsGuidValid(model.Id, ref productGuid))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            // Check User ID
+            Guid userGuid = Guid.Empty;
+            if (!this.IsGuidValid(userManager.GetUserId(User), ref userGuid))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            // Check user is the product seller
+            bool isSeller = await userService.IsUserProductSeller(userGuid, productGuid);
+            if (!isSeller)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            bool isDeleted = await this.productService
+                .SoftDeleteProductAsync(productGuid);
+            if (!isDeleted)
+            {
+                TempData["ErrorMessage"] =
+                    "Unexpected error occurred while trying to delete the cinema! Please contact system administrator!";
+                return this.RedirectToAction(nameof(Delete), new { id = model.Id });
+            }
+
+            // TODO change to wardrobe when implemented
+            return this.RedirectToAction(nameof(Index));
+        }
+
 
 
         public async Task<JsonResult> GetSubcategoriesByCategoryId(int categoryId)
@@ -135,6 +205,15 @@ namespace TrendLoop.Controllers
 
             return true;
         }
+
+        //protected async Task<bool> IsUserProductSellerAsync(string productId)
+        //{
+            //string? userId = userManager.GetUserId(User);
+            //bool isSeller = await this.managerService
+                //.IsUserManagerAsync(userId);
+
+            //return isManager;
+        //}
     }
 }
 

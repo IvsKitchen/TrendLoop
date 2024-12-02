@@ -10,5 +10,8 @@ namespace TrendLoop.Services.Data.Interfaces
 
         Task<bool> AddProductAsync(Guid sellerId, AddProductViewModel model);
 
+        Task<DeleteProductViewModel?> GetProductForDeleteByIdAsync(Guid id);
+
+        Task<bool> SoftDeleteProductAsync(Guid id);
     }
 }
