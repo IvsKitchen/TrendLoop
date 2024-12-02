@@ -2,6 +2,7 @@
 {
     public class AllProductsIndexViewModel
     {
+        // TODO make id string
         public Guid Id { get; set; }
 
         public string Name { get; set; } = null!;

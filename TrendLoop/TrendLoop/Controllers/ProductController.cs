@@ -106,9 +106,23 @@ namespace TrendLoop.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(string? id)
         {
-            // Check Guid is valid
+            // Check Product ID is valid
             Guid productGuid = Guid.Empty;
             if (!this.IsGuidValid(id, ref productGuid))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            // Check User ID is valid
+            Guid userGuid = Guid.Empty;
+            if (!this.IsGuidValid(userManager.GetUserId(User), ref userGuid))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            // Check user is the product seller
+            bool isSeller = await userService.IsUserProductSeller(userGuid, productGuid);
+            if (!isSeller)
             {
                 return this.RedirectToAction(nameof(Index));
             }
@@ -117,13 +131,6 @@ namespace TrendLoop.Controllers
                 await this.productService.GetProductForDeleteByIdAsync(productGuid);
             
             if (productToDeleteViewModel == null)
-            {
-                return this.RedirectToAction(nameof(Index));
-            }
-
-            // Check if user is the product seller
-            bool isSeller = userManager.GetUserName(User) == productToDeleteViewModel.SellerName;
-            if (!isSeller)
             {
                 return this.RedirectToAction(nameof(Index));
             }
@@ -169,7 +176,7 @@ namespace TrendLoop.Controllers
             return this.RedirectToAction(nameof(Index));
         }
 
-
+        
 
         public async Task<JsonResult> GetSubcategoriesByCategoryId(int categoryId)
         {
@@ -205,15 +212,6 @@ namespace TrendLoop.Controllers
 
             return true;
         }
-
-        //protected async Task<bool> IsUserProductSellerAsync(string productId)
-        //{
-            //string? userId = userManager.GetUserId(User);
-            //bool isSeller = await this.managerService
-                //.IsUserManagerAsync(userId);
-
-            //return isManager;
-        //}
     }
 }
 

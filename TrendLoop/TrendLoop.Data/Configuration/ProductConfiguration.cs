@@ -9,19 +9,19 @@ namespace TrendLoop.Data.Configuration
 
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            // set the ApplicationUser as Seller and Product relationship and delete behavior
+            // Set the ApplicationUser as Seller - Product relationship and delete behavior
             builder
                 .HasOne(p => p.Seller)
                 .WithMany(s => s.ProductsForSale)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // set the ApplicationUser as Buyer and Product relationship and delete behavior
+            // Set the ApplicationUser as Buyer - Product relationship and delete behavior
             builder
                 .HasOne(p => p.Buyer)
                 .WithMany(b => b.ProductsBought)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // set the ApplicationUser as Buyer and Product relationship and delete behavior
+            // Set Product and Subcategory relationship and delete behavior
             builder
                 .HasOne(p => p.Subcategory)
                 .WithMany(s => s.Products)
