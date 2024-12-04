@@ -7,10 +7,12 @@ namespace TrendLoop.Web.ViewModels
     public class AddProductViewModel
     {
         [Required]
+        [MinLength(NameMinLength)]
         [MaxLength(NameMaxLength)]
         public string Name { get; set; } = null!;
 
         [Required]
+        [MinLength(DescriptionMinLength)]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
@@ -18,6 +20,7 @@ namespace TrendLoop.Web.ViewModels
         [Range(typeof(decimal), PriceMinValueAsString, PriceMaxValueAsString)]
         public decimal Price { get; set; }
 
+        // TODO decide on image required, add default product image
         public string? ImageUrl { get; set; }
 
         public IFormFile? ImageFile{ get; set; }

@@ -82,10 +82,7 @@
                 @if (User?.Identity?.IsAuthenticated == true &&  User?.Identity?.Name == @Model.SellerName)
                 {
                     <div class="mt-4 d-flex align-items-center gap-1">
-                        <form asp-controller="Product" asp-action="Edit" method="post">
-                            <input type="hidden" name="id" value="@Model.Id" />
-                            <button type="submit" class="btn btn-primary btn-lg">Edit</button>
-                        </form>
+                        <a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-lg">Edit</a>
                         <a asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-lg">Delete</a>
                         <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-lg">Back to Products</a>
                     </div>
