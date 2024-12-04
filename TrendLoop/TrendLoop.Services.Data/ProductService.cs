@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TrendLoop.Common;
 using TrendLoop.Data.Models;
 using TrendLoop.Data.Repository.Interfaces;
 using TrendLoop.Services.Data.Interfaces;
@@ -49,6 +48,7 @@ namespace TrendLoop.Services.Data
                 .Where(p => !p.IsDeleted && p.Id == productId)
                 .Select(p => new ProductDetailsViewModel
                 {
+                    Id = p.Id.ToString(),
                     Name = p.Name,
                     Description = p.Description,
                     Price = p.Price.ToString("F2"),
@@ -61,7 +61,7 @@ namespace TrendLoop.Services.Data
                     SellerName = p.Seller.UserName,
                     SellerRating = p.Seller.SellerRating,
                     SellerAvatarUrl = p.Seller.AvatarUrl,
-                    AttributeTypesWithValues = p.ProductAttributeValues.Select(pav => new AttributeTypeValueInfoViewModel 
+                    AttributeTypesWithValues = p.ProductAttributeValues.Select(pav => new AttributeTypeAttributeValueInfoViewModel
                     { 
                         AttributeTypeId = pav.AttributeValue.AttributeTypeId,
                         AttributeTypeName = pav.AttributeValue.AttributeType.Name,
@@ -107,9 +107,93 @@ namespace TrendLoop.Services.Data
             return true;
         }
 
+        public async Task<EditProductViewModel?> GetProductToEditAsync(Guid id)
+        {
+           var test = await productRepository
+                .GetAllAttached()
+                .Where(p => p.IsDeleted == false && p.Id == id)
+                .Select(p => new EditProductViewModel
+                {
+                    Id = p.Id.ToString(),
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl,
+                    BrandId = p.BrandId,
+                    CategoryId = p.CategoryId,
+                    SubcategoryId = p.SubcategoryId,
+                    CurrentAttributeTypesWithValues = p.ProductAttributeValues.Select(pav => new AttributeTypeAttributeValueInfoViewModel
+                    {
+                        AttributeTypeId = pav.AttributeValue.AttributeTypeId,
+                        AttributeTypeName = pav.AttributeValue.AttributeType.Name,
+                        AttributeValueId = pav.AttributeValueId,
+                        Value = pav.AttributeValue.Value
+                    })
+                }).FirstOrDefaultAsync();
+
+            return test;
+        }
+
+        public async Task<bool> EditProductAsync(Guid productId, EditProductViewModel model)
+        {
+            Product? productToEdit = await productRepository
+                .GetAllAttached()
+                .Include(p => p.ProductAttributeValues)
+                .ThenInclude(pav => pav.AttributeValue)
+                .Where(p => p.Id == productId)
+                .FirstOrDefaultAsync();
+
+            if (productToEdit == null)
+            {
+                return false;
+            }
+
+            productToEdit.Name = model.Name;
+            productToEdit.Description = model.Description;
+            productToEdit.Price = model.Price;
+            productToEdit.ImageUrl = model.ImageUrl;
+            productToEdit.BrandId = model.BrandId;
+            productToEdit.CategoryId = model.CategoryId;
+            productToEdit.SubcategoryId = model.SubcategoryId;
+
+            // Create a list to store the new values
+            List<ProductAttributeValue> newProductAttributeValues = new List<ProductAttributeValue>();
+
+            foreach (var attTypeIdAttValueId in model.NewAttributeTypeIdAttributeValueIdPairs)
+            {
+                // check if mapping already exists
+                ProductAttributeValue? productAttributeValueMapping = productToEdit.ProductAttributeValues.FirstOrDefault(pav => pav.AttributeValueId == attTypeIdAttValueId.Value);
+
+                if (productAttributeValueMapping == null)
+                {
+                    // Create a new mapping
+                    productAttributeValueMapping = new ProductAttributeValue()
+                    {
+                        ProductId = productToEdit.Id,
+                        AttributeValueId = attTypeIdAttValueId.Value
+                    };
+                }
+
+                newProductAttributeValues.Add(productAttributeValueMapping);
+            }
+
+            productToEdit.ProductAttributeValues = newProductAttributeValues;
+
+            // Update product
+            try
+            {
+                await this.productRepository.UpdateAsync(productToEdit);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public async Task<DeleteProductViewModel?> GetProductForDeleteByIdAsync(Guid id)
         {
-            DeleteProductViewModel? productToDelete = await this.productRepository
+            DeleteProductViewModel? productToDelete = await productRepository
                 .GetAllAttached()
                 .Where(p => p.IsDeleted == false)
                 .Select(p => new DeleteProductViewModel

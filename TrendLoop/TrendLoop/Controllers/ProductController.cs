@@ -104,6 +104,94 @@ namespace TrendLoop.Controllers
 
         [HttpGet]
         [Authorize]
+        public async Task<IActionResult> Edit(string? id)
+        {
+            // Check Product ID
+            Guid productGuid = Guid.Empty;
+            if (!this.IsGuidValid(id, ref productGuid))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            // Check User ID
+            Guid userGuid = Guid.Empty;
+            if (!this.IsGuidValid(userManager.GetUserId(User), ref userGuid))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            // Check user is the product seller
+            bool isSeller = await userService.IsUserProductSeller(userGuid, productGuid);
+            if (!isSeller)
+            {
+                this.RedirectToAction(nameof(Details), "Product", new { id = productGuid });
+            }
+
+            EditProductViewModel? model = await this.productService
+                .GetProductToEditAsync(productGuid);
+
+            if (model == null)
+            {
+                this.RedirectToAction(nameof(Details), "Product", new { id = productGuid });
+            }
+
+            model.Brands = await brandService.GetAllBrandsAsync();
+            model.Categories = await categoryService.GetAllCategoriesAsync();
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(EditProductViewModel model)
+        {
+            // Check Product ID
+            Guid productGuid = Guid.Empty;
+            if (!this.IsGuidValid(model.Id, ref productGuid))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            // Check User ID
+            Guid userGuid = Guid.Empty;
+            if (!this.IsGuidValid(userManager.GetUserId(User), ref userGuid))
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            // Check user is the product seller
+            bool isSeller = await userService.IsUserProductSeller(userGuid, productGuid);
+            if (!isSeller)
+            {
+                this.RedirectToAction(nameof(Details), "Product", new { id = productGuid });
+            }
+
+            if (!ModelState.IsValid)
+            {
+                model.Brands = await brandService.GetAllBrandsAsync();
+                model.Categories = await categoryService.GetAllCategoriesAsync();
+                return this.View(model);
+            }
+
+            // check if user has uploaded image file instead of URL
+            if (model.ImageFile != null)
+            {
+                // upload file in Blob service and set the new URL
+                model.ImageUrl = await blobService.UploadFileAsync(model.ImageFile);
+            }
+
+            bool isUpdated = await this.productService.EditProductAsync(productGuid, model);
+            if (!isUpdated)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while updating the cinema! Please contact administrator");
+                return this.View(model);
+            }
+
+            return this.RedirectToAction(nameof(Details), "Product", new { id = model.Id });
+        }
+
+        [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Delete(string? id)
         {
             // Check Product ID is valid
@@ -175,8 +263,6 @@ namespace TrendLoop.Controllers
             // TODO change to wardrobe when implemented
             return this.RedirectToAction(nameof(Index));
         }
-
-        
 
         public async Task<JsonResult> GetSubcategoriesByCategoryId(int categoryId)
         {

@@ -58,3 +58,24 @@ body {
 .list-group-item {
     box-shadow: 0 0 35px 0 rgba(130, 130, 130, 0.2);
 }
+
+.divider {
+    display: flex;
+    align-items: center;
+}
+
+.divider::before {
+        flex: 1;
+        content: '';
+        padding: 1px;
+        opacity: 0.3;
+        background-image: linear-gradient(to left, rgb(48,49,51), transparent);
+}
+
+    .divider::after {
+        flex: 1;
+        content: '';
+        padding: 1px;
+        opacity: 0.3;
+        background-image: linear-gradient(to right, rgb(48,49,51), transparent);
+    }

@@ -1,0 +1,209 @@
+﻿@model EditProductViewModel
+
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<div class="container mt-5">
+    <!-- Product Form -->
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" class="bg-white p-4 shadow-sm rounded">
+        <input type="hidden" asp-for="Id" />
+        <div class="row">
+            <div class="col-md-5">
+                <div class="text-center">
+                    <!-- Product Image Preview -->
+                    <img src="@Model.ImageUrl" alt="Product Image" id="productImagePreview" class="img-fluid rounded shadow-sm mb-3" style="max-height: 500px; width: auto;">
+                </div>
+                <!-- Image URL Input -->
+                <div>
+                    <!-- TODO add oninput="updateImagePreview()"-->
+                    <label asp-for="@Model.ImageUrl" class="form-label-add-edit">Image URL</label>
+                    <input asp-for="@Model.ImageUrl" class="form-control" aria-required="false" placeholder="Enter image URL (optional)" />
+                </div>
+                <div class="divider">OR</div>
+                <!-- File Upload Option -->
+                <div>
+                    <label class="form-label fs-5">Upload Image:</label>
+                    <input type="file" class="form-control" id="ImageUpload">
+                </div>
+            </div>
+            <div class="col-md-7">
+                <!-- Product Name -->
+                <div class="mb-4">
+                    <label asp-for="@Model.Name" class="form-label fs-5">Product Name</label>
+                    <input asp-for="@Model.Name" class="form-control form-control-lg" placeholder="Enter product name" />
+                    <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-4">
+                    <label asp-for="@Model.Description" class="form-label fs-5">Description</label>
+                    <textarea asp-for="@Model.Description" class="form-control" rows="6" placeholder="Enter product description"></textarea>
+                    <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                </div>
+                <!-- Price -->
+                <div class="mb-4">
+                    <label asp-for="@Model.Price" class="form-label fs-5">Price €</label>
+                    <input asp-for="@Model.Price" class="form-control form-control-lg" placeholder="Enter price" />
+                    <span asp-validation-for="@Model.Price" class="text-danger"></span>
+                </div>
+                <!-- Brands Dropdown -->
+                <div class="mb-4">
+                    <label asp-for="@Model.BrandId" class="form-label fs-5">Brand</label>
+                    <select asp-for="@Model.BrandId" asp-items="@(new SelectList(Model.Brands, "Id", "Name"))" class="form-select form-select-lg">
+                        <option disabled selected>Select a brand</option>
+                    </select>
+                    <span asp-validation-for="@Model.BrandId" class="text-danger"></span>
+                </div>
+
+                <!-- Categories Dropdown -->
+                <div class="mb-4">
+                    <label asp-for="@Model.CategoryId" class="form-label fs-5">Category</label>
+                    <select asp-for="@Model.CategoryId" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))" id="categoryId" class="form-select form-select-lg">
+                        <option disabled selected>Select a category</option>
+                    </select>
+                    <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
+                </div>
+                <!-- Subcategories Dropdown -->
+                <div class="mb-4">
+                    <label asp-for="@Model.SubcategoryId" class="form-label fs-5">Subcategory</label>
+                    <select asp-for="@Model.SubcategoryId" class="form-select form-select-lg" id="subcategoryId" aria-required="true">
+                        <option disabled selected>Select a subcategory</option>
+                    </select>
+                    <span asp-validation-for="@Model.SubcategoryId" class="text-danger"></span>
+                </div>
+                <!-- Attribute types and values-->
+                <!-- Place hidden inputs to store current values for product attribute types -->
+                @foreach (var attr in Model.CurrentAttributeTypesWithValues)
+                {
+                    <input type="hidden" class="current-attribute" 
+                    data-attribute-type-id="@attr.AttributeTypeId" 
+                    data-selected-value-id="@attr.AttributeValueId" />
+                }
+                <div id="attributesContainer">
+                    <!-- Attribute types will be dynamically appended here -->
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-secondary btn-lg"> Cancel</a>
+                    <form asp-controller="Product" asp-action="EditConfirmed" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-success btn-lg"><i class="fas fa-regular fa-floppy-disk"></i> Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var isInitialPageLoad = true;
+
+        $(document).ready(function () {
+            var initialCategory = @Model.CategoryId;
+            var initialSubcategory = @Model.SubcategoryId;
+            
+            // Use initialCategory and initialSubcategory to load data once
+            if (initialCategory) {
+                // Select the category based on the model value
+                $("#categoryId").val(initialCategory);
+                // Load subcategories for the selected category
+                getSubcategoriesByCategoryId(initialCategory);
+            }
+
+            // After the subcategories are loaded, set the initial subcategory value
+            $(document).ajaxComplete(function () {
+                if (isInitialPageLoad) {
+                    // Ensure the subcategory is selected in the dropdown
+                    $("#subcategoryId").val(initialSubcategory);
+                    getAttributeTypesBySubcategoryId(initialSubcategory);
+                }
+            });
+
+            // Bind events for change in category and subcategory
+            $("#categoryId").change(function () {
+                getSubcategoriesByCategoryId($(this).val());
+            });
+
+            $("#subcategoryId").change(function () {
+                getAttributeTypesBySubcategoryId($(this).val());
+            });
+        });
+
+        // get all subcategories for selected category
+        var getSubcategoriesByCategoryId = function (categoryId) {
+            // Clear the attribute types container
+            $("#attributesContainer").empty();
+
+            $.ajax({
+                url: '@Url.Action("GetSubcategoriesByCategoryId", "Product")',
+                type: 'GET',
+                data: { categoryId: categoryId },
+                success: function (data) {
+                    // empty subcategory select and set default select option
+                    $("#subcategoryId").empty().append('<option disabled selected>Select Subcategory...</option>');
+                    $(data).each(
+                        function (index, item) {
+                            $("#subcategoryId").append('<option value="' + item.id + '">' + item.name + '</option>')
+                        }
+                    );
+                }
+            })
+        }
+
+        var getAttributeTypesBySubcategoryId = function (subcategoryId) {
+            $.ajax({
+                url: '@Url.Action("GetAttributeTypesBySubcategoryId", "Product")',
+                type: 'GET',
+                data: { subcategoryId },
+                success: function (data) {
+                    // Clear the attribute section
+                    $("#attributesContainer").empty();
+
+                    // Loop through each AttributeTypeInfoViewModel
+                    $(data).each(function (index, attributeType) {
+                        var section = `<div class="attribute-section fs-5"><strong>${attributeType.name}</strong></div>`;
+
+                        // Loop through attribute values of the current attribute type
+                        $(attributeType.attributeValues).each(function (subIndex, attributeValue) {
+                            var isChecked = isInitialPageLoad && checkIfValueIsSelected(attributeType.id, attributeValue.id) ? 'checked' : '';
+                            var radioButton = `
+                                                <div class="form-check">
+                                                    <input type="radio" name="NewAttributeTypeIdAttributeValueIdPairs[${attributeType.id}]" id="value_${attributeValue.id}" value="${attributeValue.id}" ${isChecked}>
+                                                    <label class="form-label fs-6" for="value_${attributeValue.id}">${attributeValue.value}</label>
+                                                </div>`;
+                            section += radioButton;
+                        });
+
+                        // Append the section for the current attribute type
+                        $("#attributesContainer").append(section);
+                    });
+
+                    isInitialPageLoad = false;
+                },
+                error: function () {
+                    console.error("An error occurred while fetching attributes.");
+                }
+            });
+        };
+
+        // Check if the attribute value should be selected
+        var checkIfValueIsSelected = function (attributeTypeId, attributeValueId) {
+            var isSelected = false;
+            $(".current-attribute").each(function () {
+                var currentAttributeTypeId = $(this).data("attribute-type-id");
+                var selectedValueId = $(this).data("selected-value-id");
+                if (currentAttributeTypeId === attributeTypeId && selectedValueId === attributeValueId) {
+                    isSelected = true;
+                    return false; // Break loop once match is found
+                }
+            });
+            return isSelected;
+        };
+
+    </script>
+}

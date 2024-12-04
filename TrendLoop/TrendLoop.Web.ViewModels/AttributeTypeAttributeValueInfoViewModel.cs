@@ -1,6 +1,6 @@
 ﻿namespace TrendLoop.Web.ViewModels
 {
-    public class AttributeTypeValueInfoViewModel
+    public class AttributeTypeAttributeValueInfoViewModel
     {
         public int AttributeTypeId { get; set; }
 
