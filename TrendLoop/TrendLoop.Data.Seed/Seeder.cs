@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TrendLoop.Data.Models;
-using System.Collections.Specialized;
-using System.Collections.Generic;
 
 namespace TrendLoop.Data.Seed
 {
@@ -72,10 +70,10 @@ namespace TrendLoop.Data.Seed
         // Attribute Types 
         private static List<AttributeType> attributeTypes = new List<AttributeType>
         {
-            new AttributeType { Id = 1, Name = "ClothingSize"},
-            new AttributeType { Id = 2, Name = "ShoesSize"},
-            new AttributeType { Id = 3, Name = "CommonSize"},
-            new AttributeType { Id = 4, Name = "BeltSize"},
+            new AttributeType { Id = 1, Name = "Clothing Size"},
+            new AttributeType { Id = 2, Name = "Shoes Size"},
+            new AttributeType { Id = 3, Name = "Common Size"},
+            new AttributeType { Id = 4, Name = "Belt Size"},
             new AttributeType { Id = 5, Name = "Material" },
             new AttributeType { Id = 6, Name = "Color" }
         };
@@ -337,13 +335,13 @@ namespace TrendLoop.Data.Seed
             {
                 Random random = new Random();
 
-                foreach (KeyValuePair<string, string> emailPassWordPair in users)
+                foreach (KeyValuePair<string, string> emailPasswordPair in users)
                 {
-                    var user = new ApplicationUser { Email = emailPassWordPair.Key, UserName = emailPassWordPair.Key };
+                    var user = new ApplicationUser { Email = emailPasswordPair.Key, UserName = emailPasswordPair.Key };
                     user.SellerRating = random.Next(2, 11) * 0.5;
-                    // get index of the key, so that each user has the corresponding avatar index
-                    user.AvatarUrl = userAvatars[users.Keys.ToList().IndexOf(emailPassWordPair.Key)];
-                    var result = await userManager.CreateAsync(user, emailPassWordPair.Value);
+                    // Get index of the key, so that each user has the corresponding avatar index
+                    user.AvatarUrl = userAvatars[users.Keys.ToList().IndexOf(emailPasswordPair.Key)];
+                    var result = await userManager.CreateAsync(user, emailPasswordPair.Value);
 
                     if (!result.Succeeded)
                     {

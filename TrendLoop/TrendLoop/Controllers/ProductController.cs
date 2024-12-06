@@ -124,7 +124,7 @@ namespace TrendLoop.Controllers
             bool isSeller = await userService.IsUserProductSeller(userGuid, productGuid);
             if (!isSeller)
             {
-                this.RedirectToAction(nameof(Details), "Product", new { id = productGuid });
+                return this.RedirectToAction(nameof(Details), "Product", new { id = productGuid });
             }
 
             EditProductViewModel? model = await this.productService
@@ -132,7 +132,7 @@ namespace TrendLoop.Controllers
 
             if (model == null)
             {
-                this.RedirectToAction(nameof(Details), "Product", new { id = productGuid });
+                return this.RedirectToAction(nameof(Details), "Product", new { id = productGuid });
             }
 
             model.Brands = await brandService.GetAllBrandsAsync();

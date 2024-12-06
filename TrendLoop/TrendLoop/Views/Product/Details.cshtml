@@ -22,15 +22,18 @@
                 {
                     if (i <= Math.Floor(Model.SellerRating))
                     {
-                        <i class="fa-solid fa-star fa-sm"></i> <!-- Full Star -->
+                        <!-- Full Star -->
+                        <i class="fa-solid fa-star fa-sm"></i> 
                     }
                     else if (i <= Model.SellerRating)
                     {
-                        <i class="fa-solid fa-star-half fa-sm"></i> <!-- Half Star -->
+                        <!-- Half Star -->
+                        <i class="fa-solid fa-star-half fa-sm"></i> 
                     }
                     else
                     {
-                        <i class="fa-regular fa-star fa-sm"></i> <!-- Empty Star -->
+                        <!-- Empty Star -->
+                        <i class="fa-regular fa-star fa-sm"></i> 
                     }
                 }
                 <span class="text-muted">(@Model.SellerRating.ToString("0.0"))</span>
