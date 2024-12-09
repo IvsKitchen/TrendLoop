@@ -93,10 +93,7 @@
                 {
                     <div class="mt-4 d-flex align-items-center gap-1">
                         <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-lg">Back to Products</a>
-                        <form asp-controller="Product" asp-action="AddToCart" method="post">
-                            <input type="hidden" name="id" value="@Model.Id" />
-                            <button type="submit" class="btn btn-primary btn-lg">Buy</button>
-                        </form>
+                        <a asp-controller="Purchase" asp-action="Buy" asp-route-id="@Model.Id" class="btn btn-primary btn-lg">Buy</a>
                     </div>
                 }
                 </div>

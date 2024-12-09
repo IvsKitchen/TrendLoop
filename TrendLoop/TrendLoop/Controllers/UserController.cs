@@ -30,7 +30,7 @@ namespace TrendLoop.Controllers
             }
 
             var boughtProducts = await productService.GetBoughtProductsByUserAsync(userGuid);
-            var productsForSale = await productService.GetSelledProductsByUserAsync(userGuid);
+            var productsForSale = await productService.GetProductsForSaleByUserAsync(userGuid);
 
             var model = new UserProductsViewModel
             {
