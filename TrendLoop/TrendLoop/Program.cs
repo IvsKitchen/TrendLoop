@@ -1,4 +1,3 @@
-using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TrendLoop.Data;
@@ -85,6 +84,13 @@ namespace TrendLoop
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
+
+            app.MapControllerRoute(
+            name: "Errors",
+            pattern: "Home/Error/{statusCode?}",
+            defaults: new { controller = "Home", action = "Error" });
 
             app.MapControllerRoute(
                 name: "default",
