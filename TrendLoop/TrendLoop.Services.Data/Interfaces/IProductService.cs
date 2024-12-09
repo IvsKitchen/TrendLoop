@@ -15,12 +15,16 @@ namespace TrendLoop.Services.Data.Interfaces
 
         Task<bool> EditProductAsync(Guid productId, EditProductViewModel model);
 
+        Task<BuyProductViewModel> GetProductToBuyAsync(Guid productId);
+
+        Task<bool> BuyProductAsync(Guid productId, Guid buyerId);
+
         Task<DeleteProductViewModel?> GetProductForDeleteByIdAsync(Guid id);
 
         Task<bool> SoftDeleteProductAsync(Guid id);
 
         Task<IEnumerable<UserProductViewModel>> GetBoughtProductsByUserAsync(Guid userId);
 
-        Task<IEnumerable<UserProductViewModel>> GetSelledProductsByUserAsync(Guid userId);
+        Task<IEnumerable<UserProductViewModel>> GetProductsForSaleByUserAsync(Guid userId);
     }
 }

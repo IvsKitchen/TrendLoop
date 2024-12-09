@@ -192,6 +192,55 @@ namespace TrendLoop.Services.Data
             }
         }
 
+        public async Task<BuyProductViewModel> GetProductToBuyAsync(Guid productId)
+        {
+            return await productRepository
+                .GetAllAttached()
+                .Where(p => !p.IsDeleted && p.Id == productId)
+                .Select(p => new BuyProductViewModel
+                {
+                    Id = p.Id.ToString(),
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price.ToString("F2"),
+                    ImageUrl = p.ImageUrl,
+                    BrandName = p.Brand.Name,
+                    CategoryName = p.Category.Name,
+                    SubcategoryName = p.Subcategory.Name,
+                    AttributeTypesWithValues = p.ProductAttributeValues.Select(pav => new AttributeTypeAttributeValueInfoViewModel
+                    {
+                        AttributeTypeId = pav.AttributeValue.AttributeTypeId,
+                        AttributeTypeName = pav.AttributeValue.AttributeType.Name,
+                        AttributeValueId = pav.AttributeValueId,
+                        Value = pav.AttributeValue.Value
+                    })
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> BuyProductAsync(Guid productId, Guid buyerId)
+        {
+            Product? productToBuy = await productRepository.GetByIdAsync(productId);
+
+            if (productToBuy == null)
+            {
+                return false;
+            }
+
+            productToBuy.BuyerId = buyerId;
+
+            // Update product
+            try
+            {
+                await this.productRepository.UpdateAsync(productToBuy);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public async Task<DeleteProductViewModel?> GetProductForDeleteByIdAsync(Guid id)
         {
             DeleteProductViewModel? productToDelete = await productRepository
@@ -243,7 +292,7 @@ namespace TrendLoop.Services.Data
             return boughtProducts;
         }
 
-        public async Task<IEnumerable<UserProductViewModel>> GetSelledProductsByUserAsync(Guid userId)
+        public async Task<IEnumerable<UserProductViewModel>> GetProductsForSaleByUserAsync(Guid userId)
         {
             var selledProducts = await productRepository
                 .GetAllAttached()
