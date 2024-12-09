@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static TrendLoop.Common.EntityValidationConstants.AttributeType;
-namespace TrendLoop.Web.ViewModels
+namespace TrendLoop.Web.ViewModels.Product
 {
     public class AttributeTypeInfoViewModel
     {

@@ -2,7 +2,7 @@
 using TrendLoop.Data.Models;
 using TrendLoop.Data.Repository.Interfaces;
 using TrendLoop.Services.Data.Interfaces;
-using TrendLoop.Web.ViewModels;
+using TrendLoop.Web.ViewModels.Product;
 
 namespace TrendLoop.Services.Data
 {

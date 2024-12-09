@@ -1,4 +1,5 @@
-﻿using TrendLoop.Web.ViewModels;
+﻿using TrendLoop.Web.ViewModels.Product;
+using TrendLoop.Web.ViewModels.User;
 
 namespace TrendLoop.Services.Data.Interfaces
 {
@@ -6,7 +7,7 @@ namespace TrendLoop.Services.Data.Interfaces
     {
         Task<IEnumerable<AllProductsIndexViewModel>> GetAllProductsAsync();
 
-        Task<ProductDetailsViewModel> GetProductDetailsAsync(Guid productId);
+        Task<DetailsProductViewModel> GetProductDetailsAsync(Guid productId);
 
         Task<bool> AddProductAsync(Guid sellerId, AddProductViewModel model);
 

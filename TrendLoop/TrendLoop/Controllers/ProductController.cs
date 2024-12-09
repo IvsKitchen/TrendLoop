@@ -4,14 +4,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TrendLoop.Data.Models;
 using TrendLoop.Services.Data.Interfaces;
-using TrendLoop.Web.ViewModels;
+using TrendLoop.Web.ViewModels.Product;
 
 namespace TrendLoop.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
-        private readonly UserManager<ApplicationUser> userManager;
-
         private readonly IUserService userService;
         private readonly IBrandService brandService;
         private readonly ICategoryService categoryService;
@@ -27,9 +25,8 @@ namespace TrendLoop.Controllers
                                  ISubcategoryService subcategoryService,
                                  IAttributeTypeService attributeTypeService,
                                  IProductService productService,
-                                 IBlobService blobService)
+                                 IBlobService blobService) : base(userManager)
         {
-            this.userManager = userManager;
             this.userService = userService;
             this.brandService = brandService;
             this.categoryService = categoryService;
@@ -272,31 +269,6 @@ namespace TrendLoop.Controllers
         public async Task<JsonResult> GetAttributeTypesBySubcategoryId(int subcategoryId)
         {
             return Json(await attributeTypeService.GetAttributeTypesBySubcategoryIdAsync(subcategoryId));
-        }
-
-        // TODO: move to BaseController
-        protected async Task<bool> IsUserLoggedInAsync()
-        {
-            return userManager.GetUserId(User) == null ? false : true;
-        }
-
-        // TODO: move to BaseController
-        protected bool IsGuidValid(string? id, ref Guid parsedGuid)
-        {
-            // Non-existing parameter in the URL
-            if (String.IsNullOrWhiteSpace(id))
-            {
-                return false;
-            }
-
-            // Invalid parameter in the URL
-            bool isGuidValid = Guid.TryParse(id, out parsedGuid);
-            if (!isGuidValid)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }

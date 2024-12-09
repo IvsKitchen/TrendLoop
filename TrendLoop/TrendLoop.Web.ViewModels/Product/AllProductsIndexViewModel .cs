@@ -1,14 +1,19 @@
-﻿namespace TrendLoop.Web.ViewModels
+﻿namespace TrendLoop.Web.ViewModels.Product
 {
-    public class ProductDetailsViewModel
+    public class AllProductsIndexViewModel
     {
-        public string Id { get; set; } = null!;
+        // TODO make id string
+        public Guid Id { get; set; }
 
         public string Name { get; set; } = null!;
 
         public string Description { get; set; } = null!;
 
         public string Price { get; set; } = null!;
+
+        public string Size { get; set; } = null!;
+
+        // TODO: add material
 
         public string? ImageUrl { get; set; }
 
@@ -20,12 +25,10 @@
 
         public string SubcategoryName { get; set; } = null!;
 
-        public string SellerAvatarUrl { get; set; } = null!;
-
         public string SellerName { get; set; } = null!;
 
         public double SellerRating { get; set; }
 
-        public IEnumerable<AttributeTypeAttributeValueInfoViewModel> AttributeTypesWithValues { get; set; } = new HashSet<AttributeTypeAttributeValueInfoViewModel>();
+        public string SellerAvatarUrl { get; set; } = null!;
     }
 }

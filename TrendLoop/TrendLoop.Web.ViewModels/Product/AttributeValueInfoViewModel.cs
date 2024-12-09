@@ -1,4 +1,4 @@
-﻿namespace TrendLoop.Web.ViewModels
+﻿namespace TrendLoop.Web.ViewModels.Product
 {
     public class AttributeValueInfoViewModel
     {

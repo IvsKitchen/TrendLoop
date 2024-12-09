@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using static TrendLoop.Common.EntityValidationConstants.Brand;
-namespace TrendLoop.Web.ViewModels
+namespace TrendLoop.Web.ViewModels.Product
 {
     public class BrandInfoViewModel
     {

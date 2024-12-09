@@ -1,4 +1,4 @@
-﻿using TrendLoop.Web.ViewModels;
+﻿using TrendLoop.Web.ViewModels.Product;
 
 namespace TrendLoop.Services.Data.Interfaces
 {

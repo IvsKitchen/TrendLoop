@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TrendLoop.Web.ViewModels
+namespace TrendLoop.Web.ViewModels.Admin
 {
     public class AdminAddUserDashboardViewModel
     {

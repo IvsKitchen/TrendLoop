@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using TrendLoop.Data.Models;
 
 namespace TrendLoop.Areas.Identity.Pages.Account
@@ -102,6 +103,8 @@ namespace TrendLoop.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
+
+                    return RedirectToAction("Index", "Product");
                 }
                 foreach (var error in result.Errors)
                 {

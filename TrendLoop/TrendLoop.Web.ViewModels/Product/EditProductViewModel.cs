@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using static TrendLoop.Common.EntityValidationConstants.Product;
-namespace TrendLoop.Web.ViewModels
+namespace TrendLoop.Web.ViewModels.Product
 {
     public class EditProductViewModel
     {
@@ -23,7 +23,7 @@ namespace TrendLoop.Web.ViewModels
 
         public string? ImageUrl { get; set; }
 
-        public IFormFile? ImageFile{ get; set; }
+        public IFormFile? ImageFile { get; set; }
 
         [Required]
         public int BrandId { get; set; }

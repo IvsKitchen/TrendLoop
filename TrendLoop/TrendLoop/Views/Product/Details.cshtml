@@ -1,8 +1,6 @@
-﻿@using Microsoft.AspNet.Identity
-@using Microsoft.AspNetCore.Identity
-@using TrendLoop.Common
-
-@model ProductDetailsViewModel
+﻿@using TrendLoop.Common
+@using TrendLoop.Web.ViewModels.Product
+@model DetailsProductViewModel
 @{
     ViewData["Title"] = "Product Details";
 }
@@ -85,19 +83,20 @@
                 @if (User?.Identity?.IsAuthenticated == true &&  User?.Identity?.Name == @Model.SellerName)
                 {
                     <div class="mt-4 d-flex align-items-center gap-1">
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-lg">Back to Products</a>
                         <a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-lg">Edit</a>
                         <a asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-lg">Delete</a>
-                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-lg">Back to Products</a>
+                        
                     </div>
                 }
                 else
                 {
                     <div class="mt-4 d-flex align-items-center gap-1">
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-lg">Back to Products</a>
                         <form asp-controller="Product" asp-action="AddToCart" method="post">
                             <input type="hidden" name="id" value="@Model.Id" />
                             <button type="submit" class="btn btn-primary btn-lg">Buy</button>
                         </form>
-                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-lg">Back to Products</a>
                     </div>
                 }
                 </div>

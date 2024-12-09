@@ -1,47 +1,20 @@
-﻿
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Newtonsoft.Json;
 using TrendLoop.Data.Models;
 using TrendLoop.Services.Data.Interfaces;
-using TrendLoop.Web.ViewModels;
-
+using TrendLoop.Web.ViewModels.Admin;
 using static TrendLoop.Common.ApplicationConstants;
 
 namespace TrendLoop.Controllers
 {
-    public class AdminController : Controller
+    public class AdminController : BaseController
     {
-        private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
-
         private readonly IUserService userService;
-        private readonly IBrandService brandService;
-        private readonly ICategoryService categoryService;
-        private readonly ISubcategoryService subcategoryService;
-        private readonly IAttributeTypeService attributeTypeService;
-        private readonly IProductService productService;
-        private readonly IBlobService blobService;
 
-        public AdminController(Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager,
-                                 IUserService userService,
-                                 IBrandService brandService,
-                                 ICategoryService categoryService,
-                                 ISubcategoryService subcategoryService,
-                                 IAttributeTypeService attributeTypeService,
-                                 IProductService productService,
-                                 IBlobService blobService)
+        public AdminController(UserManager<ApplicationUser> userManager,IUserService userService) : base(userManager)
         {
-            this.userManager = userManager;
             this.userService = userService;
-            this.brandService = brandService;
-            this.categoryService = categoryService;
-            this.subcategoryService = subcategoryService;
-            this.attributeTypeService = attributeTypeService;
-            this.productService = productService;
-            this.blobService = blobService;
         }
 
         [HttpGet]

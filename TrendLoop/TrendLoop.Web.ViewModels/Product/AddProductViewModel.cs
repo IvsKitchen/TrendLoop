@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using static TrendLoop.Common.EntityValidationConstants.Product;
-namespace TrendLoop.Web.ViewModels
+namespace TrendLoop.Web.ViewModels.Product
 {
     public class AddProductViewModel
     {
@@ -23,7 +23,7 @@ namespace TrendLoop.Web.ViewModels
         // TODO decide on image required, add default product image
         public string? ImageUrl { get; set; }
 
-        public IFormFile? ImageFile{ get; set; }
+        public IFormFile? ImageFile { get; set; }
 
         [Required]
         public DateTime AddedOn { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace TrendLoop.Web.ViewModels
+﻿namespace TrendLoop.Web.ViewModels.User
 {
     public class UserProductViewModel
     {

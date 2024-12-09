@@ -3,7 +3,8 @@ using TrendLoop.Data.Models;
 using TrendLoop.Data.Repository.Interfaces;
 using TrendLoop.Services.Data.Interfaces;
 using TrendLoop.Web.ViewModels;
-
+using TrendLoop.Web.ViewModels.Product;
+using TrendLoop.Web.ViewModels.User;
 using static TrendLoop.Common.EntityValidationConstants.Product;
 
 namespace TrendLoop.Services.Data
@@ -41,12 +42,12 @@ namespace TrendLoop.Services.Data
                 .ToListAsync();
         }
 
-        public async Task<ProductDetailsViewModel> GetProductDetailsAsync(Guid productId)
+        public async Task<DetailsProductViewModel> GetProductDetailsAsync(Guid productId)
         {
             return await productRepository
                 .GetAllAttached()
                 .Where(p => !p.IsDeleted && p.Id == productId)
-                .Select(p => new ProductDetailsViewModel
+                .Select(p => new DetailsProductViewModel
                 {
                     Id = p.Id.ToString(),
                     Name = p.Name,
