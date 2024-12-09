@@ -22,7 +22,7 @@ namespace TrendLoop.Services.Data
         {
             return await productRepository
                 .GetAllAttached()
-                .Where(p => !p.IsDeleted)
+                .Where(p => !p.IsDeleted && p.BuyerId == null)
                 .Select(p => new AllProductsIndexViewModel
                 {
                     Id = p.Id,
@@ -53,7 +53,6 @@ namespace TrendLoop.Services.Data
                     Name = p.Name,
                     Description = p.Description,
                     Price = p.Price.ToString("F2"),
-                    //Size = p.ProductAttributeValues.FirstOrDefault(pav => pav.AttributeValue.AttributeType.Name.ToLower().Contains("size")).AttributeValue.Value,
                     ImageUrl = p.ImageUrl,
                     AddedOn = p.AddedOn.ToString(AddedOnDateFormat),
                     BrandName = p.Brand.Name,
@@ -294,9 +293,9 @@ namespace TrendLoop.Services.Data
 
         public async Task<IEnumerable<UserProductViewModel>> GetProductsForSaleByUserAsync(Guid userId)
         {
-            var selledProducts = await productRepository
+            var productsForSale = await productRepository
                 .GetAllAttached()
-                .Where(p => p.IsDeleted == false && p.SellerId == userId)
+                .Where(p => p.IsDeleted == false && p.SellerId == userId && p.BuyerId == null)
                 .Select(p => new UserProductViewModel
                 {
                     Name = p.Name,
@@ -308,7 +307,7 @@ namespace TrendLoop.Services.Data
                     SubcategoryName = p.Subcategory.Name,
                 }).ToListAsync();
 
-            return selledProducts;
+            return productsForSale;
         }
     }
 }

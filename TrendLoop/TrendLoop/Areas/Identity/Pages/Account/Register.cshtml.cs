@@ -104,7 +104,7 @@ namespace TrendLoop.Areas.Identity.Pages.Account
 
                     var userId = await _userManager.GetUserIdAsync(user);
 
-                    return RedirectToAction("Index", "Product");
+                    return RedirectToPage("./Login");
                 }
                 foreach (var error in result.Errors)
                 {

@@ -15,7 +15,9 @@
         <div class="col-md-3 mb-4">
             <div class="card h-100" style="width: 100%;">
                 <div class="user-container">
-                    <img class="user-avatar" src="@product.SellerAvatarUrl" alt="Avatar">
+                    <img class="user-avatar"
+                         src="@(!string.IsNullOrEmpty(product.SellerAvatarUrl) ? product.SellerAvatarUrl : Url.Content("~/images/blankAvatarImage.png"))"  
+                         alt="Avatar"/>
                     <div class="rating">
                         @for (int i = 1; i < 6; i++)
                         {
@@ -34,15 +36,10 @@
                         }
                     </div>
                 </div>
-                
-                @if (!string.IsNullOrEmpty(product.ImageUrl))
-                {
-                    <img src="@product.ImageUrl" class="card-img-top" style="max-height: 200px; object-fit: cover;" alt="@product.Name">
-                }
-                else
-                {
-                    <img src="~/img/no-image-available-02.jpg" class="card-img-top" style="max-height: 200px; object-fit: cover;" alt="No Image Available">
-                }
+                <img 
+                    class="card-img-top" style="max-height: 200px; object-fit: cover;"
+                    src="@(!string.IsNullOrEmpty(product.ImageUrl) ? product.ImageUrl : Url.Content("~/images/defaultProductImage.jpg"))" 
+                    alt="Product Image" />
 
                 <div class="card-body d-flex flex-column">
 
@@ -56,10 +53,7 @@
                     @if (User?.Identity?.IsAuthenticated == true && product.SellerName != User.Identity.Name)
                     {
                         <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-info">Details</a>
-                        <form asp-controller="Product" asp-action="AddToCart" method="post">
-                            <input type="hidden" name="id" value="@product.Id" />
-                            <button type="submit" class="btn btn-success">Add To Cart</button>
-                        </form>
+                        <a asp-controller="Purchase" asp-action="Buy" asp-route-id="@product.Id" class="btn btn-success">Buy</a>
                     }
                     else
                     {
@@ -71,4 +65,4 @@
                 </div>
             </div>
         </div>
-}
+    }

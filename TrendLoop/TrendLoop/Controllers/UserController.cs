@@ -18,7 +18,7 @@ namespace TrendLoop.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Products()
+        public async Task<IActionResult> Wardrobe()
         {
             var userId = userManager.GetUserId(User);
 
@@ -29,13 +29,13 @@ namespace TrendLoop.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
-            var boughtProducts = await productService.GetBoughtProductsByUserAsync(userGuid);
             var productsForSale = await productService.GetProductsForSaleByUserAsync(userGuid);
-
+            var boughtProducts = await productService.GetBoughtProductsByUserAsync(userGuid);
+            
             var model = new UserProductsViewModel
             {
-                BoughtProducts = boughtProducts,
-                ProductsForSale = productsForSale
+                ProductsForSale = productsForSale,
+                BoughtProducts = boughtProducts
             };
 
             return View(model);
