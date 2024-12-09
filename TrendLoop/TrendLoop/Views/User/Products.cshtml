@@ -1,0 +1,77 @@
+﻿@model UserProductsViewModel
+
+<div class="container mt-4">
+    <h2 class="text-center">My Products</h2>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="products-for-sale-tab" data-bs-toggle="tab" data-bs-target="#products-for-sale" type="button" role="tab" aria-controls="products-for-sale" aria-selected="true">Products for Sale</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="bought-products-tab" data-bs-toggle="tab" data-bs-target="#bought-products" type="button" role="tab" aria-controls="bought-products" aria-selected="false">Bought Products</button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content mt-3" id="myTabContent">
+        <!-- Bought Products -->
+        <div class="tab-pane fade show active" id="bought-products" role="tabpanel" aria-labelledby="bought-products-tab">
+            @if (Model.BoughtProducts.Any())
+            {
+                <div class="row">
+                    @foreach (var product in Model.BoughtProducts)
+                    {
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name">
+                                <div class="card-body">
+                                    <h5 class="card-title">@product.Name</h5>
+                                    <p class="card-text">@product.Description</p>
+                                    <p class="card-text"><strong>Price:</strong> $@product.Price</p>
+                                    <p class="card-text"><strong>Brand:</strong>@product.BrandName</p>
+                                    <p class="card-text"><strong>Category:</strong>@product.CategoryName</p>
+                                    <p class="card-text"><strong>Subcategory:</strong>@product.SubcategoryName</p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">You haven't bought any products yet.</p>
+            }
+        </div>
+
+        <!-- Products for Sale -->
+        <div class="tab-pane fade" id="products-for-sale" role="tabpanel" aria-labelledby="products-for-sale-tab">
+            @if (Model.ProductsForSale.Any())
+            {
+                <div class="row">
+                    @foreach (var product in Model.ProductsForSale)
+                    {
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name">
+                                <div class="card-body">
+                                    <h5 class="card-title">@product.Name</h5>
+                                    <p class="card-text">@product.Description</p>
+                                    <p class="card-text"><strong>Price:</strong> $@product.Price</p>
+                                    <p class="card-text"><strong>Brand:</strong>@product.BrandName</p>
+                                    <p class="card-text"><strong>Category:</strong>@product.CategoryName</p>
+                                    <p class="card-text"><strong>Subcategory:</strong>@product.SubcategoryName</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">You don't have any products for sale.</p>
+            }
+        </div>
+    </div>
+</div>

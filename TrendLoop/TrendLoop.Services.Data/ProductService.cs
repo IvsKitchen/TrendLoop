@@ -222,5 +222,43 @@ namespace TrendLoop.Services.Data
             // Since using soft delete technique only change flag for deletion and update
             return await this.productRepository.UpdateAsync(productToDelete);
         }
+
+        public async Task<IEnumerable<UserProductViewModel>> GetBoughtProductsByUserAsync(Guid userId)
+        {
+            var boughtProducts = await productRepository
+                .GetAllAttached()
+                .Where(p => p.IsDeleted == false && p.BuyerId == userId)
+                .Select(p => new UserProductViewModel
+                {
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl,
+                    BrandName = p.Brand.Name,
+                    CategoryName = p.Category.Name,
+                    SubcategoryName = p.Subcategory.Name,
+                }).ToListAsync();
+
+            return boughtProducts;
+        }
+
+        public async Task<IEnumerable<UserProductViewModel>> GetSelledProductsByUserAsync(Guid userId)
+        {
+            var selledProducts = await productRepository
+                .GetAllAttached()
+                .Where(p => p.IsDeleted == false && p.SellerId == userId)
+                .Select(p => new UserProductViewModel
+                {
+                    Name = p.Name,
+                    Description = p.Description,
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl,
+                    BrandName = p.Brand.Name,
+                    CategoryName = p.Category.Name,
+                    SubcategoryName = p.Subcategory.Name,
+                }).ToListAsync();
+
+            return selledProducts;
+        }
     }
 }

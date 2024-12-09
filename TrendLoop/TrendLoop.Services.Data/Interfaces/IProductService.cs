@@ -17,5 +17,9 @@ namespace TrendLoop.Services.Data.Interfaces
         Task<DeleteProductViewModel?> GetProductForDeleteByIdAsync(Guid id);
 
         Task<bool> SoftDeleteProductAsync(Guid id);
+
+        Task<IEnumerable<UserProductViewModel>> GetBoughtProductsByUserAsync(Guid userId);
+
+        Task<IEnumerable<UserProductViewModel>> GetSelledProductsByUserAsync(Guid userId);
     }
 }
