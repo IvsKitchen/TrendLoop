@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrendLoop.Data.Models;
 using TrendLoop.Services.Data.Interfaces;
-using TrendLoop.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using TrendLoop.Web.ViewModels.User;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace TrendLoop.Controllers
 {
@@ -26,14 +26,17 @@ namespace TrendLoop.Controllers
             Guid userGuid = Guid.Empty;
             if (!this.IsGuidValid(userManager.GetUserId(User), ref userGuid))
             {
-                return this.RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor.Index), "Product");
             }
 
+            // Retrieve products for sale
             var productsForSale = await productService.GetProductsForSaleByUserAsync(userGuid);
+            // Retrieve bought products
             var boughtProducts = await productService.GetBoughtProductsByUserAsync(userGuid);
             
             var model = new UserProductsViewModel
             {
+                // Assign to model
                 ProductsForSale = productsForSale,
                 BoughtProducts = boughtProducts
             };

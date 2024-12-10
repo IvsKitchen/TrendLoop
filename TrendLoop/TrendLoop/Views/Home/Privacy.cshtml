@@ -3,4 +3,64 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3>
+                        At <strong>TrendLoop</strong>, we take your privacy seriously. This policy outlines how we collect, use, and protect your information when using our platform.
+                    </h3>
+                    <h3 class="mt-4"><strong>1. Information We Collect</strong></h3>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-check-circle text-primary"></i>Personal Information: Name, email address, and other account details.</li>
+                        <li><i class="bi bi-check-circle text-primary"></i>Transaction Information: Details of items you buy or sell on TrendLoop.</li>
+                        <li><i class="bi bi-check-circle text-primary"></i>Usage Data: Information on how you navigate our platform.</li>
+                    </ul>
+
+                    <h3 class="mt-4"><strong>2. How We Use Your Information</strong></h3>
+                    <p>
+                        Your information helps us:
+                    </p>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-arrow-right text-primary"></i> Provide a seamless buying and selling experience.</li>
+                        <li><i class="bi bi-arrow-right text-primary"></i> Improve our platform and services.</li>
+                        <li><i class="bi bi-arrow-right text-primary"></i> Protect against fraud and unauthorized access.</li>
+                    </ul>
+
+                    <h3 class="mt-4"><strong>3. How We Protect Your Information</strong></h3>
+                    <p>
+                        We use industry-standard measures like encryption and secure servers to ensure your data is safe. Only authorized personnel have access to your personal information.
+                    </p>
+
+                    <h3 class="mt-4"><strong>4. Your Rights</strong></h3>
+                    <p>
+                        You have the right to:
+                    </p>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-shield-lock text-primary"></i> Access and update your personal data.</li>
+                        <li><i class="bi bi-shield-lock text-primary"></i> Request deletion of your account and data.</li>
+                        <li><i class="bi bi-shield-lock text-primary"></i> Opt-out of marketing communications.</li>
+                    </ul>
+
+                    <h3 class="mt-4"><strong>5. Contact Us</strong></h3>
+                    <p>
+                        If you have any questions about this policy, please contact us at:
+                    </p>
+                    <address>
+                        <i class="bi bi-envelope text-primary"></i> support@trendloop.com<br />
+                        <i class="bi bi-telephone text-primary"></i> +1-800-555-LOOP
+                    </address>
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-primary btn-large" onclick="window.history.back()">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

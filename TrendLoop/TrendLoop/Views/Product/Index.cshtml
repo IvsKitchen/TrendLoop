@@ -73,7 +73,7 @@
             <div class="card h-100" style="width: 100%;">
                 <div class="user-container">
                     <img class="user-avatar"
-                         src="@(!string.IsNullOrEmpty(product.SellerAvatarUrl) ? product.SellerAvatarUrl : Url.Content("~/images/blankAvatarImage.png"))"  
+                         src="@(!string.IsNullOrEmpty(product.SellerAvatarUrl) ? product.SellerAvatarUrl : Url.Content("~/images/defaultAvatarImage.png"))"  
                          alt="Avatar"/>
                     <div class="rating">
                         @for (int i = 1; i < 6; i++)
@@ -102,7 +102,7 @@
 
                     <h4 class="card-title">@product.Name</h4>
                     <h4 class="card-text-price">@product.Price€</h4>
-                    <p class="card-text text-center"><strong>@product.BrandName</strong></p>
+                    <p class="card-text text-center">@product.BrandName</p>
                     <p class="card-text">Size: @product.Size</p>
                     <p class="card-text">Category: @product.CategoryName</p>
                     <p class="card-text">Subcategory: @product.SubcategoryName</p>
