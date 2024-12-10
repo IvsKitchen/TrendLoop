@@ -27,5 +27,15 @@ namespace TrendLoop.Services.Data
                 })
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<string>> GetAllBrandsNames()
+        {
+            return await brandRepository
+               .GetAllAttached()
+               .Where(b => !b.IsDeleted)
+               .Select(b => b.Name)
+               .Distinct()
+               .ToArrayAsync();
+        }
     }
 }

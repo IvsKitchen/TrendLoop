@@ -7,5 +7,7 @@ namespace TrendLoop.Services.Data.Interfaces
         Task<IEnumerable<SubcategoryInfoViewModel>> GetAllSubcategoriesAsync();
 
         Task<IEnumerable<SubcategoryInfoViewModel>> GetSubcategoriesByCategoryIdAsync(int categoryId);
+
+        Task<IEnumerable<string>> GetAllSubcategoriesNamesAsync();
     }
 }

@@ -41,5 +41,15 @@ namespace TrendLoop.Services.Data
                 })
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<string>> GetAllSubcategoriesNamesAsync()
+        {
+            return await subcategoryRepository
+               .GetAllAttached()
+               .Where(s => !s.IsDeleted)
+               .Select(s => s.Name)
+               .Distinct()
+               .ToArrayAsync();
+        }
     }
 }

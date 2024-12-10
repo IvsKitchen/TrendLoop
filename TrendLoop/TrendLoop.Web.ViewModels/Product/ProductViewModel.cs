@@ -1,9 +1,8 @@
 ﻿namespace TrendLoop.Web.ViewModels.Product
 {
-    public class AllProductsIndexViewModel
+    public class ProductViewModel
     {
-        // TODO make id string
-        public Guid Id { get; set; }
+        public string Id { get; set; } = null!;
 
         public string Name { get; set; } = null!;
 
@@ -12,8 +11,6 @@
         public string Price { get; set; } = null!;
 
         public string Size { get; set; } = null!;
-
-        // TODO: add material
 
         public string? ImageUrl { get; set; }
 

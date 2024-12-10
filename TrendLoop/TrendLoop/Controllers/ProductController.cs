@@ -37,11 +37,19 @@ namespace TrendLoop.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(ProductsViewModel model)
         {
-            IEnumerable<AllProductsIndexViewModel> allProducts = await this.productService.GetAllProductsAsync();
+            IEnumerable<ProductViewModel> allProducts = await this.productService.GetAllProductsAsync(model);
 
-            return this.View(allProducts);
+            model.Products = allProducts;
+            model.AllBrands = await brandService.GetAllBrandsNames();
+            model.AllCategories = await categoryService.GetAllCategoriesNames();
+            model.AllSubcategories = await subcategoryService.GetAllSubcategoriesNamesAsync();
+            model.TotalItems = await this.productService.GetAllProductsCountAsync(model);
+
+            model.TotalPages = model.PageSize == null ? 1 : (int)Math.Ceiling((double)model.TotalItems / model.PageSize.Value);
+
+            return this.View(model);
         }
 
         [HttpGet]

@@ -5,7 +5,9 @@ namespace TrendLoop.Services.Data.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<AllProductsIndexViewModel>> GetAllProductsAsync();
+        Task<IEnumerable<ProductViewModel>> GetAllProductsAsync(ProductsViewModel model);
+
+        Task<int> GetAllProductsCountAsync(ProductsViewModel model);
 
         Task<DetailsProductViewModel> GetProductDetailsAsync(Guid productId);
 

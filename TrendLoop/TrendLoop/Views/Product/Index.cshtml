@@ -1,8 +1,65 @@
 ﻿@using TrendLoop.Web.ViewModels.Product
-@model IEnumerable<AllProductsIndexViewModel>
+@model ProductsViewModel
 @{
     ViewData["Title"] = "Products List";
+
 }
+@{
+    var d = Model.Products;
+    Model.Products = null;
+}
+<div>@Json.Serialize(Model)</div>
+@{
+    Model.Products = d;
+}
+<form method="get" asp-action="Index" class="mb-4">
+    <div class="row">
+        <div class="col">
+            <input asp-for="SearchQuery" class="form-control" placeholder="Search by title..." />
+        </div>
+        <div class="col">
+            <select asp-for="BrandFilter" class="form-control">
+                <option selected value="">Filter by brand...</option>
+                @if (Model.AllBrands != null)
+                {
+                   
+                    foreach (string brand in Model.AllBrands)
+                    {
+                        <option value="@brand">@brand</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col">
+            <select asp-for="CategoryFilter" class="form-control">
+                <option selected value="">Filter by category...</option>
+                @if (Model.AllCategories != null)
+                {
+                    
+                    foreach (string category in Model.AllCategories)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col">
+            <select asp-for="SubcategoryFilter" class="form-control">
+                <option selected value="">Filter by subcategory...</option>
+                @if (Model.AllSubcategories != null)
+                {
+                    foreach (string subcategory in Model.AllSubcategories)
+                    {
+                        <option value="@subcategory">@subcategory</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-secondary">Filter</button>
+        </div>
+    </div>
+</form>
 <div class="d-flex justify-content-left align-items-center mb-3" style="margin-top: 20px;">
     @if (User?.Identity?.IsAuthenticated == true)
     {
@@ -10,7 +67,7 @@
     }
 </div>
 <div class="row text-center">
-    @foreach (var product in Model)
+    @foreach (var product in Model.Products)
     {
         <div class="col-md-3 mb-4">
             <div class="card h-100" style="width: 100%;">
@@ -45,9 +102,10 @@
 
                     <h4 class="card-title">@product.Name</h4>
                     <h4 class="card-text-price">@product.Price€</h4>
+                    <p class="card-text text-center"><strong>@product.BrandName</strong></p>
                     <p class="card-text">Size: @product.Size</p>
-                    <p class="card-text">Material:unknown</p>
-                    <p class="card-text">Added on: @product.AddedOn</p>
+                    <p class="card-text">Category: @product.CategoryName</p>
+                    <p class="card-text">Subcategory: @product.SubcategoryName</p>
 
                     <div class="d-flex justify-content-end mt-auto gap-1">
                     @if (User?.Identity?.IsAuthenticated == true && product.SellerName != User.Identity.Name)
@@ -66,3 +124,47 @@
             </div>
         </div>
     }
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination">
+            @if (Model.PageNumber > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@(Model.PageNumber - 1)"
+                       asp-route-searchQuery="@Model.SearchQuery"
+                       asp-route-brandFilter="@Model.BrandFilter"
+                       asp-route-categoryFilter="@Model.CategoryFilter"
+                       asp-route-subcategoryFilter="@Model.SubcategoryFilter">
+                        Previous
+                    </a>
+                </li>
+            }
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@i"
+                       asp-route-searchQuery="@Model.SearchQuery"
+                       asp-route-brandFilter="@Model.BrandFilter"
+                       asp-route-categoryFilter="@Model.CategoryFilter"
+                       asp-route-subcategoryFilter="@Model.SubcategoryFilter">
+                        @i
+                    </a>
+                </li>
+            }
+            @if (Model.PageNumber < Model.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@(Model.PageNumber + 1)"
+                       asp-route-searchQuery="@Model.SearchQuery"
+                       asp-route-brandFilter="@Model.BrandFilter"
+                       asp-route-categoryFilter="@Model.CategoryFilter"
+                       asp-route-subcategoryFilter="@Model.SubcategoryFilter">
+                        Next
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>

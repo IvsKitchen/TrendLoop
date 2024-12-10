@@ -18,14 +18,47 @@ namespace TrendLoop.Services.Data
             this.productRepository = productRepository;
         }
 
-        public async Task<IEnumerable<AllProductsIndexViewModel>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductViewModel>> GetAllProductsAsync(ProductsViewModel model)
         {
-            return await productRepository
-                .GetAllAttached()
+            IQueryable<Product> allProductsQuery = productRepository.GetAllAttached();
+            
+            if (!String.IsNullOrWhiteSpace(model.SearchQuery))
+            {
+                allProductsQuery = allProductsQuery
+                    .Where(p => p.Name.ToLower().Contains(model.SearchQuery.ToLower()));
+            }
+
+            if (!String.IsNullOrWhiteSpace(model.BrandFilter))
+            {
+                allProductsQuery = allProductsQuery
+                    .Where(p => p.Brand.Name.ToLower() == model.BrandFilter.ToLower());
+            }
+
+            if (!String.IsNullOrWhiteSpace(model.CategoryFilter))
+            {
+                allProductsQuery = allProductsQuery
+                    .Where(p => p.Category.Name.ToLower() == model.CategoryFilter.ToLower());
+            }
+
+            if (!String.IsNullOrWhiteSpace(model.SubcategoryFilter))
+            {
+                allProductsQuery = allProductsQuery
+                    .Where(p => p.Subcategory.Name.ToLower() == model.SubcategoryFilter.ToLower());
+            }
+
+            if (model.PageNumber.HasValue &&
+               model.PageSize.HasValue)
+            {
+                allProductsQuery = allProductsQuery
+                    .Skip(model.PageSize.Value * (model.PageNumber.Value - 1))
+                    .Take(model.PageSize.Value);
+            }
+
+            return await allProductsQuery
                 .Where(p => !p.IsDeleted && p.BuyerId == null)
-                .Select(p => new AllProductsIndexViewModel
+                .Select(p => new ProductViewModel
                 {
-                    Id = p.Id,
+                    Id = p.Id.ToString(),
                     Name = p.Name,
                     Description = p.Description,
                     Price = p.Price.ToString("F2"),
@@ -40,6 +73,23 @@ namespace TrendLoop.Services.Data
                     SellerAvatarUrl = p.Seller.AvatarUrl
                 })
                 .ToListAsync();
+        }
+
+        public async Task<int> GetAllProductsCountAsync(ProductsViewModel model)
+        {
+            ProductsViewModel modelCopy = new ProductsViewModel()
+            {
+                PageNumber = null,
+                PageSize = null,
+                SearchQuery = model.SearchQuery,
+                BrandFilter = model.BrandFilter,
+                CategoryFilter = model.CategoryFilter,
+                SubcategoryFilter = model.SubcategoryFilter,
+            };
+
+            int productsCount = (await this.GetAllProductsAsync(modelCopy))
+                .Count();
+            return productsCount;
         }
 
         public async Task<DetailsProductViewModel> GetProductDetailsAsync(Guid productId)

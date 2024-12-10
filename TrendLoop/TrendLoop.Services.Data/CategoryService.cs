@@ -2,7 +2,6 @@
 using TrendLoop.Data.Models;
 using TrendLoop.Data.Repository.Interfaces;
 using TrendLoop.Services.Data.Interfaces;
-using TrendLoop.Web.ViewModels;
 using TrendLoop.Web.ViewModels.Product;
 
 namespace TrendLoop.Services.Data
@@ -29,6 +28,16 @@ namespace TrendLoop.Services.Data
                         .Select(sc => new SubcategoryInfoViewModel { Id = sc.Id, Name = sc.Name })
                 })
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<string>> GetAllCategoriesNames()
+        {
+            return await categoryRepository
+                .GetAllAttached()
+                .Where(c => !c.IsDeleted)
+                .Select(c => c.Name)
+                .Distinct()
+                .ToArrayAsync();
         }
     }
 }
