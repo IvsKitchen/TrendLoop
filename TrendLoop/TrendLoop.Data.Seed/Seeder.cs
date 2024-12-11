@@ -8,6 +8,7 @@ namespace TrendLoop.Data.Seed
     public class Seeder
     {
         private UserManager<ApplicationUser> userManager;
+        private RoleManager<IdentityRole<Guid>> roleManager;
         private TrendLoopDbContext dbContext;
 
         private static double minPrice = 5;
@@ -311,9 +312,10 @@ namespace TrendLoop.Data.Seed
             "Versatile and functional, this piece is ideal for both casual and formal occasions."
         };
 
-        public Seeder(UserManager<ApplicationUser> userManager, TrendLoopDbContext dbContext)
+        public Seeder(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager, TrendLoopDbContext dbContext)
         {
             this.userManager = userManager;
+            this.roleManager = roleManager;
             this.dbContext = dbContext;
         }
 
@@ -333,6 +335,18 @@ namespace TrendLoop.Data.Seed
         {
             if (!dbContext.Users.Any())
             {
+                // add admin role
+                await roleManager.CreateAsync(new IdentityRole<Guid>
+                {
+                    Name = "Admin"
+                });
+
+                // add admin user
+                var adminUser = new ApplicationUser { Email = "admin@trendloop.com", UserName = "admin@trendloop.com" };
+                await userManager.CreateAsync(adminUser, "Admin1234");
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+               
+                // add random users
                 Random random = new Random();
 
                 foreach (KeyValuePair<string, string> emailPasswordPair in users)

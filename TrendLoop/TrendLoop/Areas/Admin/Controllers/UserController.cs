@@ -1,18 +1,22 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using System.Text.Json;
+using TrendLoop.Controllers;
 using TrendLoop.Data.Models;
 using TrendLoop.Services.Data.Interfaces;
-using TrendLoop.Web.ViewModels.Admin;
+using TrendLoop.Web.ViewModels.Areas.Admin.User;
 using static TrendLoop.Common.ApplicationConstants;
 
-namespace TrendLoop.Controllers
+namespace TrendLoop.Areas.Admin.Controllers
 {
-    public class AdminController : BaseController
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    public class UserController : BaseController
     {
         private readonly IUserService userService;
 
-        public AdminController(UserManager<ApplicationUser> userManager,IUserService userService) : base(userManager)
+        public UserController(UserManager<ApplicationUser> userManager, IUserService userService) : base(userManager)
         {
             this.userService = userService;
         }
@@ -51,7 +55,7 @@ namespace TrendLoop.Controllers
                 }
 
                 // Store the resultMessageModel in TempData
-                TempData["ResultMessage"] = JsonConvert.SerializeObject(resultMessageModel);
+                TempData["ResultMessage"] = JsonSerializer.Serialize(resultMessageModel);
 
                 // Redirect to the ResultMessage view
                 return RedirectToAction("ResultMessage", "Admin");
@@ -96,14 +100,14 @@ namespace TrendLoop.Controllers
                 }
 
                 // Store the resultMessageModel in TempData
-                TempData["ResultMessage"] = JsonConvert.SerializeObject(resultMessageModel);
+                TempData["ResultMessage"] = JsonSerializer.Serialize(resultMessageModel);
 
                 // Redirect to the ResultMessage view
                 return RedirectToAction("ResultMessage", "Admin");
             }
 
             // If Model state is not valid return the model for editing
-            return View("UserDashboard","Admin");
+            return View("UserDashboard", "Admin");
         }
 
         [HttpGet]
@@ -113,7 +117,7 @@ namespace TrendLoop.Controllers
             var resultMessageJson = TempData["ResultMessage"] as string;
             if (resultMessageJson != null)
             {
-                var resultMessage = JsonConvert.DeserializeObject<ResultMessageViewModel>(resultMessageJson);
+                var resultMessage = JsonSerializer.Deserialize<ResultMessageViewModel>(resultMessageJson);
                 return View(resultMessage);
             }
 
@@ -122,5 +126,3 @@ namespace TrendLoop.Controllers
         }
     }
 }
-
-

@@ -29,4 +29,9 @@
     <ProjectReference Include="..\TrendLoop.Web.ViewModels\TrendLoop.Web.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+  </ItemGroup>
+
 </Project>

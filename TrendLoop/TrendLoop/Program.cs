@@ -61,8 +61,9 @@ namespace TrendLoop
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<TrendLoopDbContext>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
                 // Seed the DB
-                Seeder seeder = new Seeder(userManager, dbContext);
+                Seeder seeder = new Seeder(userManager, roleManager, dbContext);
                 await seeder.SeedDb(10);
             }
 
@@ -92,6 +93,10 @@ namespace TrendLoop
             name: "Errors",
             pattern: "Home/Error/{statusCode?}",
             defaults: new { controller = "Home", action = "Error" });
+
+            app.MapControllerRoute(
+                name: "Areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",

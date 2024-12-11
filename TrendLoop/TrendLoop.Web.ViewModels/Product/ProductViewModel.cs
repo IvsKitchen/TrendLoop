@@ -10,8 +10,6 @@
 
         public string Price { get; set; } = null!;
 
-        public string Size { get; set; } = null!;
-
         public string? ImageUrl { get; set; }
 
         public string AddedOn { get; set; } = null!;

@@ -2,7 +2,6 @@
 using TrendLoop.Data.Models;
 using TrendLoop.Data.Repository.Interfaces;
 using TrendLoop.Services.Data.Interfaces;
-using TrendLoop.Web.ViewModels;
 using TrendLoop.Web.ViewModels.Product;
 using TrendLoop.Web.ViewModels.User;
 using static TrendLoop.Common.EntityValidationConstants.Product;
@@ -62,7 +61,6 @@ namespace TrendLoop.Services.Data
                     Name = p.Name,
                     Description = p.Description,
                     Price = p.Price.ToString("F2"),
-                    Size = p.ProductAttributeValues.FirstOrDefault(pav => pav.AttributeValue.AttributeType.Name.ToLower().Contains("size")).AttributeValue.Value,
                     ImageUrl = p.ImageUrl,
                     AddedOn = p.AddedOn.ToString(AddedOnDateFormat),
                     BrandName = p.Brand.Name,

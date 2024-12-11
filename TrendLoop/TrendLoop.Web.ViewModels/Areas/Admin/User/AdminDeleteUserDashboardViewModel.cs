@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TrendLoop.Web.ViewModels.Admin
+namespace TrendLoop.Web.ViewModels.Areas.Admin.User
 {
     public class AdminDeleteUserDashboardViewModel
     {

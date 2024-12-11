@@ -1,4 +1,4 @@
-﻿using TrendLoop.Web.ViewModels.Admin;
+﻿using TrendLoop.Web.ViewModels.Areas.Admin.User;
 
 namespace TrendLoop.Services.Data.Interfaces
 {
