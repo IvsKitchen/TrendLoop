@@ -47,8 +47,8 @@
 
         <!-- Footer Buttons -->
         <div class="card-footer text-center">
-            <a asp-action="Index" class="btn btn-secondary"><i class="fa-solid fa-times"></i> Cancel </a>
             <form asp-controller="Purchase" asp-action="Buy" method="post">
+                <a class="btn btn-secondary" onclick="window.history.back()"><i class="fa-solid fa-times"></i> Cancel </a>
                 <input type="hidden" name="ProductId" value="@Model.Id" />
                 <button type="submit" class="btn btn-success me-2"><i class="fa-solid fa-check"></i> OK</button>
             </form>

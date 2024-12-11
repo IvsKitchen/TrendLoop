@@ -7,7 +7,8 @@
 <div class="container mt-5">
     <div class="seller-details d-flex align-items-center mb-4">
         <!-- Seller Avatar -->
-        <img src="@Model.SellerAvatarUrl" alt="Seller Avatar" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px;">
+        <img src="@(!string.IsNullOrEmpty(@Model.SellerAvatarUrl) ? @Model.SellerAvatarUrl : Url.Content("~/images/defaultAvatarImage.png"))" alt="Seller Avatar" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover; margin-right: 15px;">
+        
 
         <!-- Seller Info -->
         <div>
@@ -42,7 +43,9 @@
         <!-- Product Image Section -->
         <div class="col-lg-6 mb-4">
             <div class="product-image" id="product-image-details">
-                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded">
+                <img src="@(!string.IsNullOrEmpty(@Model.ImageUrl) ? @Model.ImageUrl : Url.Content("~/images/defaultProductImage.jpg"))"
+                     alt="@Model.Name" 
+                    class="img-fluid rounded">
             </div>
         </div>
 
@@ -62,7 +65,7 @@
                 <p class="mb-2"><strong>Description:</strong> @Model.Description</p>
                 <!-- Price -->
                 <div class="product-price mt-4">
-                    <h4 class="text-primary">€@Model.Price</h4>
+                    <p class="h4 text-primary"><strong>€@Model.Price</strong></p>
                 </div>
 
                 <!-- Product Attributes -->
@@ -80,20 +83,28 @@
                 </div>
 
                 <!-- Buttons -->
-                @if (User?.Identity?.IsAuthenticated == true &&  User?.Identity?.Name == @Model.SellerName)
+                @if (User?.Identity?.IsAuthenticated == true)
                 {
-                    <div class="mt-4 d-flex align-items-center gap-1">
-                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-lg">Back to Products</a>
-                        <a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-lg">Edit</a>
-                        <a asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-lg">Delete</a>
-                        
-                    </div>
+                    if (User?.Identity?.Name == @Model.SellerName)
+                    {
+                        <div class="mt-4 d-flex align-items-center gap-1">
+                            <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-lg">Back to Products</a>
+                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-lg">Edit</a>
+                            <a asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-lg">Delete</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="mt-4 d-flex align-items-center gap-1">
+                            <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-lg" onclick="window.history.back()">Back to Products</a>
+                            <a asp-controller="Purchase" asp-action="Buy" asp-route-id="@Model.Id" class="btn btn-primary btn-lg">Buy</a>
+                        </div>
+                    }
                 }
                 else
                 {
                     <div class="mt-4 d-flex align-items-center gap-1">
-                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-lg">Back to Products</a>
-                        <a asp-controller="Purchase" asp-action="Buy" asp-route-id="@Model.Id" class="btn btn-primary btn-lg">Buy</a>
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-lg" onclick="window.history.back()">Back to Products</a>
                     </div>
                 }
                 </div>

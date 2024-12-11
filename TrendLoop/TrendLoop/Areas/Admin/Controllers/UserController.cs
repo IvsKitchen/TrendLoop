@@ -58,7 +58,7 @@ namespace TrendLoop.Areas.Admin.Controllers
                 TempData["ResultMessage"] = JsonSerializer.Serialize(resultMessageModel);
 
                 // Redirect to the ResultMessage view
-                return RedirectToAction("ResultMessage", "Admin");
+                return RedirectToAction("ResultMessage", "User");
             }
 
             // If Model state is not valid return the model for editing
@@ -103,7 +103,7 @@ namespace TrendLoop.Areas.Admin.Controllers
                 TempData["ResultMessage"] = JsonSerializer.Serialize(resultMessageModel);
 
                 // Redirect to the ResultMessage view
-                return RedirectToAction("ResultMessage", "Admin");
+                return RedirectToAction("ResultMessage", "User");
             }
 
             // If Model state is not valid return the model for editing

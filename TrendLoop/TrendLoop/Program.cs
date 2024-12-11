@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TrendLoop.Data;
 using TrendLoop.Data.Models;
@@ -34,6 +35,11 @@ namespace TrendLoop
             }).AddRoles<IdentityRole<Guid>>()
               .AddEntityFrameworkStores<TrendLoopDbContext>();
             builder.Services.AddControllersWithViews();
+            
+            builder.Services.AddControllersWithViews(cfg =>
+            {
+                cfg.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
 
             // Register repositories
             builder.Services.AddScoped<IRepository<ApplicationUser, Guid>, BaseRepository<ApplicationUser, Guid>>();

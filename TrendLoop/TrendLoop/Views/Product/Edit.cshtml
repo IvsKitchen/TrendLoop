@@ -87,7 +87,7 @@
 
                 <!-- Buttons -->
                 <div class="d-flex justify-content-between mt-4">
-                    <a asp-action="Index" class="btn btn-secondary btn-lg"> Cancel</a>
+                    <a class="btn btn-secondary btn-lg" onclick="window.history.back()"> Cancel</a>
                     <form asp-controller="Product" asp-action="EditConfirmed" method="post">
                         <input type="hidden" name="id" value="@Model.Id" />
                         <button type="submit" class="btn btn-success btn-lg"><i class="fas fa-regular fa-floppy-disk"></i> Save Changes</button>
