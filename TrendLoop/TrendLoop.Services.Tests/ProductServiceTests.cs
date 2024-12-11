@@ -1,6 +1,5 @@
 using MockQueryable;
 using Moq;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using TrendLoop.Data.Models;
 using TrendLoop.Data.Repository.Interfaces;
@@ -162,7 +161,6 @@ namespace TrendLoop.Services.Tests
             {
                 new CategoryInfoViewModel { Id = categories[0].Id, Name = categories[0].Name, Subcategories = allSubcategoriesForFirstCategory }
             };
-
         }
 
         [Test]
@@ -547,6 +545,26 @@ namespace TrendLoop.Services.Tests
             // Ensure there are bought Products
             Assert.IsTrue(boughtProducts.Any());
             Assert.That(boughtProducts.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task TestGetProductsForSaleByUserAsync()
+        {
+            Guid sellerId = users[0].Id;
+            Product productForSale = productsData[0];
+
+            IQueryable<Product> productMockQueryable = productsData.BuildMock();
+
+            this.productRepository
+                .Setup(p => p.GetAllAttached())
+                .Returns(productMockQueryable);
+
+            IProductService productService = new ProductService(productRepository.Object);
+
+            IEnumerable<UserProductViewModel> productsForSale = await productService.GetProductsForSaleByUserAsync(sellerId);
+            // Ensure there are Products for sale
+            Assert.IsTrue(productsForSale.Any());
+            Assert.That(productsForSale.Count(), Is.EqualTo(1));
         }
     }
 }
