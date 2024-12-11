@@ -30,7 +30,7 @@ namespace TrendLoop.Services.Data
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<string>> GetAllCategoriesNames()
+        public async Task<IEnumerable<string>> GetAllCategoriesNamesAsync()
         {
             return await categoryRepository
                 .GetAllAttached()

@@ -157,7 +157,7 @@ namespace TrendLoop.Services.Data
 
         public async Task<EditProductViewModel?> GetProductToEditAsync(Guid id)
         {
-           var test = await productRepository
+            EditProductViewModel? productToEdit = await productRepository
                 .GetAllAttached()
                 .Where(p => p.IsDeleted == false && p.Id == id)
                 .Select(p => new EditProductViewModel
@@ -179,7 +179,7 @@ namespace TrendLoop.Services.Data
                     })
                 }).FirstOrDefaultAsync();
 
-            return test;
+            return productToEdit;
         }
 
         public async Task<bool> EditProductAsync(Guid productId, EditProductViewModel model)

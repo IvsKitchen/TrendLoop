@@ -42,8 +42,8 @@ namespace TrendLoop.Controllers
             IEnumerable<ProductViewModel> allProducts = await this.productService.GetAllProductsAsync(model);
 
             model.Products = allProducts;
-            model.AllBrands = await brandService.GetAllBrandsNames();
-            model.AllCategories = await categoryService.GetAllCategoriesNames();
+            model.AllBrands = await brandService.GetAllBrandsNamesAsync();
+            model.AllCategories = await categoryService.GetAllCategoriesNamesAsync();
             model.AllSubcategories = await subcategoryService.GetAllSubcategoriesNamesAsync();
             model.TotalItems = await this.productService.GetAllProductsCountAsync(model);
 

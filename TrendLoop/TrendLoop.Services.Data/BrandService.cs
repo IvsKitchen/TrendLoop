@@ -28,7 +28,7 @@ namespace TrendLoop.Services.Data
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<string>> GetAllBrandsNames()
+        public async Task<IEnumerable<string>> GetAllBrandsNamesAsync()
         {
             return await brandRepository
                .GetAllAttached()

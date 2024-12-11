@@ -6,6 +6,6 @@ namespace TrendLoop.Services.Data.Interfaces
     {
         Task<IEnumerable<BrandInfoViewModel>> GetAllBrandsAsync();
 
-        Task<IEnumerable<string>> GetAllBrandsNames();
+        Task<IEnumerable<string>> GetAllBrandsNamesAsync();
     }
 }
