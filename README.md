@@ -23,5 +23,4 @@ Products have flexible attributes managed through AttributeTypes and AttributeVa
 
 *** Categories and Brands
 Products are categorized under hierarchical structures (Categories and Subcategories) with soft-delete functionality (IsDeleted).
-Brands enables filtering by luxury brand names, supporting active/inactive status (IsDeleted).
-Extensibility and Customization
+Brands enables filtering by brand names, supporting active/inactive status (IsDeleted).
